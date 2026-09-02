@@ -290,6 +290,20 @@
         activeTag.textContent = 'Active Layer: ' + type.toUpperCase();
       }
     }
+
+    // Fetch API Deliverable predictions from Express Backend
+    async function loadApiPredictions() {
+      try {
+        const response = await fetch('http://localhost:5000/api/predictions');
+        if (response.ok) {
+          const predictions = await response.json();
+          console.log('[ATLAS Prediction API Feed Loaded]:', predictions);
+        }
+      } catch (err) {
+        console.warn('[ATLAS Prediction API Offline]: Running with local simulated feed');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadApiPredictions);
   </script>
 
 </body>
