@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATLAS - System Architecture</title>
+  <title>ATLAS</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -33,49 +37,31 @@
     }
   </script>
 </head>
+
 <body class="bg-atlas-bg text-atlas-text font-sans antialiased min-h-screen flex flex-col">
 
   <!-- Header / TopBar -->
-  <header class="bg-atlas-dark text-white px-6 py-4 flex flex-col sm:flex-row justify-between items-center border-b border-gray-700">
+  <header
+    class="bg-atlas-dark text-white px-6 py-4 flex flex-col sm:flex-row justify-between items-center border-b border-gray-700">
     <div class="flex items-center space-x-3 mb-2 sm:mb-0">
-      <a href="landing_page.html" class="flex items-center space-x-3">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdTZvGDfYyO2-xkfP_3_opnRBid4RenHaWuNoFHH8tKjHIFDa75caWEtJvmI61EMsKsEAFo8O4F5GJAKQz_RLZbrtmA9-2Y7iMaVK0ic8za43NEARd4TZz2xKS3cr8xbs6LVzL1Ll0imJCfPUo367E9mfMSM537VBb0HTiJTE-JzNbFJ1sMwicu2NCM_MxKjMhPNWk2u8yQ80beq4o_ST72QbsXsffhwRqQpUnPvMXgV6cYUJG11wshw" alt="ATLAS Logo" class="h-8 w-auto object-contain">
+      <div class="flex items-center space-x-3">
+        <img src="logo.png" alt="ATLAS Logo" class="h-8 w-8 rounded-full aspect-square object-cover">
         <span class="font-display text-xl font-bold tracking-wide">ATLAS</span>
-      </a>
+      </div>
       <span class="text-gray-400 hidden md:inline">|</span>
-      <span class="text-sm text-gray-300 font-medium hidden md:inline">AI Traffic Logistics & Adaptive System</span>
     </div>
     <div class="flex items-center space-x-4 text-xs font-semibold uppercase tracking-wider">
       <span class="bg-atlas-red/80 px-3 py-1 rounded text-white">System Architecture</span>
-      <a href="dashboard.html" class="hover:text-atlas-orange transition-colors flex items-center gap-1">
-        Admin Dashboard <span class="material-symbols-outlined text-sm">arrow_forward</span>
-      </a>
     </div>
   </header>
-
-  <!-- Navigation Bar -->
-  <nav class="bg-white border-b border-gray-200 px-6 py-3 shadow-sm">
-    <div class="container mx-auto flex flex-wrap justify-between items-center text-sm font-medium">
-      <div class="flex space-x-6">
-        <a href="landing_page.html" class="text-atlas-muted hover:text-atlas-text">Cover</a>
-        <a href="architecture.html" class="text-atlas-red font-semibold border-b-2 border-atlas-red pb-1">System Architecture</a>
-        <a href="dashboard.html" class="text-atlas-muted hover:text-atlas-text">Admin Dashboard</a>
-        <a href="prediction.html" class="text-atlas-muted hover:text-atlas-text">Prediction Engine</a>
-        <a href="green_corridor_management.html" class="text-atlas-muted hover:text-atlas-text">Green Corridor</a>
-        <a href="traffic_control.html" class="text-atlas-muted hover:text-atlas-text">Alerts & Traffic Control</a>
-        <a href="variables_settings.html" class="text-atlas-muted hover:text-atlas-text">Variables / Settings</a>
-        <a href="public_dashboard.html" class="text-atlas-muted hover:text-atlas-text">Public Dashboard</a>
-      </div>
-      <div class="text-xs text-atlas-muted font-mono">CIPHER Team • Page 2 & 9 of 9</div>
-    </div>
-  </nav>
 
   <!-- Main Content Area -->
   <main class="flex-grow container mx-auto px-6 py-8">
 
     <div class="mb-6">
       <h1 class="text-2xl font-bold text-atlas-text mb-1">Data Flow — from raw signals to dashboards</h1>
-      <p class="text-sm text-atlas-muted">Architecture diagram mapping real-time signal processing, ML inference engines, TMS core decision layer, and user endpoints.</p>
+      <p class="text-sm text-atlas-muted">Architecture diagram mapping real-time signal processing, ML inference
+        engines, TMS core decision layer, and user endpoints.</p>
     </div>
 
     <!-- Data Flow Diagram Canvas Card -->
@@ -107,7 +93,8 @@
             <h4 class="font-bold text-xs uppercase text-atlas-text">Event Calendar</h4>
             <p class="text-[11px] text-atlas-muted">/ Feed</p>
           </div>
-          <div class="p-4 bg-emerald-50 border border-emerald-400 rounded-lg text-center shadow-2xs col-span-2 md:col-span-1">
+          <div
+            class="p-4 bg-emerald-50 border border-emerald-400 rounded-lg text-center shadow-2xs col-span-2 md:col-span-1">
             <span class="material-symbols-outlined text-emerald-700 mb-1">medical_services</span>
             <h4 class="font-bold text-xs uppercase text-emerald-900">Ambulance GPS</h4>
             <p class="text-[11px] text-emerald-700">/ Dispatch</p>
@@ -154,7 +141,8 @@
           <span class="material-symbols-outlined">tune</span>
         </div>
         <h3 class="font-bold text-base uppercase text-indigo-900 tracking-wide">CORE TMS DECISION LAYER</h3>
-        <p class="text-xs text-indigo-700 mt-1">sets congestion alert levels + auto-applies traffic control (admin can override)</p>
+        <p class="text-xs text-indigo-700 mt-1">sets congestion alert levels + auto-applies traffic control (admin can
+          override)</p>
       </div>
 
       <!-- Connector Arrow -->
@@ -163,52 +151,58 @@
       </div>
 
       <!-- Level 4: Central State / DB -->
-      <div class="p-4 bg-gray-100 border border-gray-400 rounded-lg text-center max-w-md mx-auto mb-10 font-bold text-xs uppercase text-atlas-text">
+      <div
+        class="p-4 bg-gray-100 border border-gray-400 rounded-lg text-center max-w-md mx-auto mb-10 font-bold text-xs uppercase text-atlas-text">
         <span class="material-symbols-outlined align-middle mr-1 text-sm">storage</span> CENTRAL STATE / DB
       </div>
 
       <!-- Level 5: Endpoints / Dashboards -->
       <div class="grid md:grid-cols-2 gap-6">
         <!-- Admin Dashboard Box -->
-        <a href="dashboard.html" class="p-6 bg-purple-50/70 border-2 border-purple-300 rounded-xl text-center block hover:border-purple-500 transition-colors">
+        <div class="p-6 bg-purple-50/70 border-2 border-purple-300 rounded-xl text-center">
           <h4 class="font-bold text-sm uppercase text-purple-900 mb-1">ADMIN DASHBOARD</h4>
           <p class="text-xs text-purple-700">full control, override log, ambulance ops, settings</p>
-        </a>
+        </div>
 
         <!-- Public Dashboard Box -->
-        <a href="public_dashboard.html" class="p-6 bg-amber-50/70 border-2 border-amber-400 rounded-xl text-center block hover:border-amber-600 transition-colors">
+        <div class="p-6 bg-amber-50/70 border-2 border-amber-400 rounded-xl text-center">
           <h4 class="font-bold text-sm uppercase text-amber-900 mb-1">PUBLIC DASHBOARD</h4>
           <p class="text-xs text-amber-800">exact location within 1km of corridor, alert-only beyond</p>
-        </a>
+        </div>
       </div>
     </div>
 
-    <!-- KEY RULE Box (Doc Page 2) -->
+    <!-- KEY RULE Box -->
     <div class="bg-amber-50 border-2 border-amber-400 rounded-xl p-6 mb-10">
       <div class="flex items-center gap-2 text-amber-900 font-bold text-xs uppercase tracking-wider mb-2">
         <span class="material-symbols-outlined text-amber-700">gavel</span> KEY RULE
       </div>
       <p class="text-sm text-amber-900 leading-relaxed font-medium">
-        Public visibility rule: users within 1km of an active green corridor see the exact ambulance location + route. Beyond 1km, only a general "active corridor nearby" alert is shown (no coordinates).
+        Public visibility rule: users within 1km of an active green corridor see the exact ambulance location + route.
+        Beyond 1km, only a general "active corridor nearby" alert is shown (no coordinates).
       </p>
     </div>
 
-    <!-- Open Questions / Next Steps (Doc Page 9) -->
+    <!-- System Roadmap -->
     <div class="bg-white border border-gray-300 rounded-xl p-8 shadow-sm">
       <h3 class="text-lg font-bold text-atlas-text mb-4 flex items-center gap-2">
-        <span class="material-symbols-outlined text-atlas-orange">help_center</span> Still to decide as a team (Page 9)
+        <span class="material-symbols-outlined text-atlas-orange">settings_suggest</span> System Specifications & Next
+        Phase
       </h3>
       <ul class="space-y-3 text-sm text-atlas-text border-l-2 border-atlas-orange pl-4 mb-8">
-        <li>• <strong>Digital Twin view ("what if" simulation sandbox)</strong> — include in v1 or treat as a stretch goal for after the core system works?</li>
-        <li>• <strong>Login/role handling</strong> — single admin role for now, or multiple admin permission levels (e.g. observer vs full control)?</li>
-        <li>• <strong>Which zones/junctions</strong> are in scope for the first prototype — full city or one test corridor?</li>
-        <li>• <strong>Data source availability</strong> — do we have real traffic camera/sensor access, or are we simulating input data for the demo?</li>
+        <li>• <strong>Digital Twin Simulation Sandbox</strong> — Real-time signal timing simulation and scenario
+          modeling.</li>
+        <li>• <strong>Role-Based Access Control</strong> — Granular permission levels for dispatchers, operators, and
+          administrators.</li>
+        <li>• <strong>Multi-Zone Scalability</strong> — Expandable junction grouping across all city quadrants.</li>
+        <li>• <strong>Live Camera & Sensor Feeds</strong> — Direct integration with municipal IoT traffic sensors.</li>
       </ul>
 
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1">ABOUT THIS DOCUMENT</h4>
+        <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1">ABOUT ATLAS SYSTEM</h4>
         <p class="text-xs text-blue-800">
-          This document maps the notes from the CIPHER team's planning session into a full architecture and page-by-page wireframe set, ready for review before implementation.
+          This system integrates real-time traffic signal optimization with emergency vehicle green corridors to
+          optimize urban mobility.
         </p>
       </div>
     </div>
@@ -216,8 +210,9 @@
   </main>
 
   <footer class="bg-atlas-dark text-gray-400 py-4 px-6 text-xs text-center border-t border-gray-700 mt-12">
-    CIPHER Team • Page 2 & 9 of 9 Architecture Specification
+    ATLAS
   </footer>
 
 </body>
+
 </html>

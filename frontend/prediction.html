@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATLAS - Prediction Engine</title>
+  <title>ATLAS</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -33,45 +37,52 @@
     }
   </script>
 </head>
+
 <body class="bg-atlas-bg text-atlas-text font-sans antialiased min-h-screen flex">
 
   <!-- Sidebar Component -->
   <aside class="w-64 bg-atlas-dark text-white flex flex-col fixed inset-y-0 left-0 z-30 shadow-lg">
     <!-- Brand logo -->
     <a href="landing_page.html" class="p-6 border-b border-gray-700 flex items-center space-x-3">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdTZvGDfYyO2-xkfP_3_opnRBid4RenHaWuNoFHH8tKjHIFDa75caWEtJvmI61EMsKsEAFo8O4F5GJAKQz_RLZbrtmA9-2Y7iMaVK0ic8za43NEARd4TZz2xKS3cr8xbs6LVzL1Ll0imJCfPUo367E9mfMSM537VBb0HTiJTE-JzNbFJ1sMwicu2NCM_MxKjMhPNWk2u8yQ80beq4o_ST72QbsXsffhwRqQpUnPvMXgV6cYUJG11wshw" alt="ATLAS Logo" class="h-9 w-auto object-contain">
+      <img src="logo.png" alt="ATLAS Logo" class="h-9 w-9 rounded-full aspect-square object-cover">
       <div>
         <h1 class="font-display font-bold text-xl tracking-wide leading-none text-white">ATLAS</h1>
-        <p class="text-[10px] text-gray-400 mt-1">AI Traffic Logistics System</p>
       </div>
     </a>
 
     <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-      <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="dashboard.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">dashboard</span>
         <span>Dashboard</span>
       </a>
-      <a href="prediction.html" class="flex items-center space-x-3 px-4 py-3 bg-atlas-red text-white rounded-lg font-medium text-sm">
+      <a href="prediction.html"
+        class="flex items-center space-x-3 px-4 py-3 bg-atlas-red text-white rounded-lg font-medium text-sm">
         <span class="material-symbols-outlined text-xl">online_prediction</span>
         <span>Prediction</span>
       </a>
-      <a href="green_corridor_management.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="green_corridor_management.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">emergency</span>
         <span>Green Corridor</span>
       </a>
-      <a href="traffic_control.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="traffic_control.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">traffic</span>
         <span>Alerts & Traffic Control</span>
       </a>
-      <a href="variables_settings.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="variables_settings.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">settings</span>
         <span>Variables / Settings</span>
       </a>
-      <a href="architecture.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="architecture.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">schema</span>
         <span>System Architecture</span>
       </a>
-      <a href="public_dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="public_dashboard.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">public</span>
         <span>Public View</span>
       </a>
@@ -91,7 +102,6 @@
   <!-- Main Content Area -->
   <div class="ml-64 flex-1 flex flex-col min-h-screen">
 
-    <!-- Topbar Header (Doc Page 4 Wireframe) -->
     <header class="h-16 bg-atlas-dark text-white px-8 flex justify-between items-center sticky top-0 z-20 shadow-md">
       <div class="flex items-center space-x-6">
         <span class="font-display font-bold text-lg tracking-wide uppercase text-atlas-red">PREDICTION</span>
@@ -100,7 +110,8 @@
         <div class="flex items-center space-x-2 text-xs bg-gray-800 px-3 py-1.5 rounded border border-gray-600">
           <span class="material-symbols-outlined text-sm text-atlas-orange">location_on</span>
           <span class="text-gray-300">Zone:</span>
-          <select id="zoneSelect" class="bg-transparent text-white font-medium focus:outline-none cursor-pointer text-xs">
+          <select id="zoneSelect"
+            class="bg-transparent text-white font-medium focus:outline-none cursor-pointer text-xs">
             <option value="all">Central City Zone 1</option>
             <option value="north">North Highway Junction</option>
             <option value="south">South Bypass Zone</option>
@@ -108,7 +119,6 @@
         </div>
       </div>
 
-      <!-- Time Range Selector (Doc Page 4) -->
       <div class="flex items-center space-x-4">
         <span class="text-xs text-gray-300 font-medium">Time range:</span>
         <div class="bg-gray-800 p-1 rounded-lg border border-gray-600 flex space-x-1 text-xs">
@@ -123,7 +133,6 @@
     <!-- Main Dashboard Content -->
     <main class="p-8 flex-1 flex flex-col gap-6 max-w-[1600px] w-full mx-auto">
 
-      <!-- CONGESTION FORECAST GRAPH Card (Page 4 Wireframe) -->
       <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm flex flex-col relative">
         <div class="flex justify-between items-center mb-4">
           <div>
@@ -158,17 +167,18 @@
             <path d="M 0 170 Q 150 160 300 110 T 450 120" stroke="#8AA8AB" stroke-width="3" fill="none"></path>
 
             <!-- Predicted Traffic Path (Red) -->
-            <path id="predictionPath" d="M 450 120 Q 550 60 650 45 T 800 90" stroke="#B0323A" stroke-width="3.5" fill="none" stroke-dasharray="6 2"></path>
+            <path id="predictionPath" d="M 450 120 Q 550 60 650 45 T 800 90" stroke="#B0323A" stroke-width="3.5"
+              fill="none" stroke-dasharray="6 2"></path>
 
             <!-- Interactive Overlay Curve (Orange/Amber - Triggered by lower panels) -->
-            <path id="overlayPath" d="M 0 170 Q 200 180 400 130 T 800 30" stroke="#D97746" stroke-width="2.5" fill="none" stroke-dasharray="3 3" opacity="0.2"></path>
+            <path id="overlayPath" d="M 0 170 Q 200 180 400 130 T 800 30" stroke="#D97746" stroke-width="2.5"
+              fill="none" stroke-dasharray="3 3" opacity="0.2"></path>
 
             <!-- Live Marker -->
             <circle cx="450" cy="120" r="5" fill="#B0323A" class="animate-ping"></circle>
             <circle cx="450" cy="120" r="4" fill="#B0323A"></circle>
           </svg>
 
-          <!-- Timeline Slider (Page 4 Wireframe) -->
           <div class="mt-4 flex items-center space-x-4">
             <span class="text-xs text-atlas-muted font-mono">04:00 PM</span>
             <input type="range" min="0" max="100" value="60" class="w-full accent-atlas-red cursor-pointer">
@@ -178,13 +188,14 @@
         </div>
       </div>
 
-      <!-- 3 Lower Panels Feeding Forecast Graph (Page 4 Wireframe) -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         <!-- 1. HISTORY TRENDS -->
-        <div onclick="toggleOverlay('history')" class="group bg-white rounded-xl border border-gray-300 p-6 shadow-sm hover:border-atlas-red transition-all cursor-pointer">
+        <div onclick="toggleOverlay('history')"
+          class="group bg-white rounded-xl border border-gray-300 p-6 shadow-sm hover:border-atlas-red transition-all cursor-pointer">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-xs uppercase tracking-wider text-atlas-text group-hover:text-atlas-red transition-colors flex items-center gap-2">
+            <h3
+              class="font-bold text-xs uppercase tracking-wider text-atlas-text group-hover:text-atlas-red transition-colors flex items-center gap-2">
               <span class="material-symbols-outlined text-atlas-red">history</span> HISTORY TRENDS
             </h3>
             <span class="material-symbols-outlined text-sm text-gray-400 group-hover:text-atlas-red">touch_app</span>
@@ -208,9 +219,11 @@
         </div>
 
         <!-- 2. WEATHER OVERLAY -->
-        <div onclick="toggleOverlay('weather')" class="group bg-white rounded-xl border border-gray-300 p-6 shadow-sm hover:border-atlas-orange transition-all cursor-pointer">
+        <div onclick="toggleOverlay('weather')"
+          class="group bg-white rounded-xl border border-gray-300 p-6 shadow-sm hover:border-atlas-orange transition-all cursor-pointer">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-xs uppercase tracking-wider text-atlas-text group-hover:text-atlas-orange transition-colors flex items-center gap-2">
+            <h3
+              class="font-bold text-xs uppercase tracking-wider text-atlas-text group-hover:text-atlas-orange transition-colors flex items-center gap-2">
               <span class="material-symbols-outlined text-atlas-orange">cloud</span> WEATHER OVERLAY
             </h3>
             <span class="material-symbols-outlined text-sm text-gray-400 group-hover:text-atlas-orange">touch_app</span>
@@ -233,9 +246,11 @@
         </div>
 
         <!-- 3. EVENT IMPACT -->
-        <div onclick="toggleOverlay('event')" class="group bg-white rounded-xl border border-gray-300 p-6 shadow-sm hover:border-atlas-teal transition-all cursor-pointer">
+        <div onclick="toggleOverlay('event')"
+          class="group bg-white rounded-xl border border-gray-300 p-6 shadow-sm hover:border-atlas-teal transition-all cursor-pointer">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-xs uppercase tracking-wider text-atlas-text group-hover:text-atlas-teal transition-colors flex items-center gap-2">
+            <h3
+              class="font-bold text-xs uppercase tracking-wider text-atlas-text group-hover:text-atlas-teal transition-colors flex items-center gap-2">
               <span class="material-symbols-outlined text-atlas-teal">event</span> EVENT IMPACT
             </h3>
             <span class="material-symbols-outlined text-sm text-gray-400 group-hover:text-atlas-teal">touch_app</span>
@@ -257,13 +272,13 @@
 
       </div>
 
-      <!-- NOTES Box (Page 4 Wireframe) -->
       <div class="bg-amber-50/80 border border-amber-300 rounded-xl p-5 text-xs text-amber-950">
         <h4 class="font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1">
           <span class="material-symbols-outlined text-sm text-amber-700">sticky_note_2</span> NOTES
         </h4>
         <ul class="space-y-1 list-disc list-inside text-amber-900">
-          <li>All three lower panels feed the same forecast graph above; selecting an event or a weather condition highlights its effect on the forecast line.</li>
+          <li>All three lower panels feed the same forecast graph above; selecting an event or a weather condition
+            highlights its effect on the forecast line.</li>
           <li>This is the source data for the Prediction Engine box in the architecture diagram.</li>
         </ul>
       </div>
@@ -271,8 +286,7 @@
     </main>
 
     <footer class="bg-white border-t border-gray-200 py-3 px-8 text-xs text-gray-500 flex justify-between items-center">
-      <span>ATLAS — AI Traffic Logistics & Adaptive System</span>
-      <span>CIPHER Team • Page 4 of 9 Reference Wireframe</span>
+      <span>ATLAS</span>
     </footer>
 
   </div>
@@ -281,7 +295,7 @@
     function toggleOverlay(type) {
       const overlayPath = document.getElementById('overlayPath');
       const activeTag = document.getElementById('activeOverlayTag');
-      
+
       if (overlayPath.getAttribute('opacity') === '1') {
         overlayPath.setAttribute('opacity', '0.2');
         activeTag.classList.add('hidden');
@@ -303,7 +317,7 @@
           // Populate Zone Selector dynamically
           const zoneSelect = document.getElementById('zoneSelect');
           if (zoneSelect && predictions.length > 0) {
-            zoneSelect.innerHTML = predictions.map(p => 
+            zoneSelect.innerHTML = predictions.map(p =>
               `<option value="${p.segmentId}">${p.segmentName} (${p.zone}) - ${p.alertLevel}</option>`
             ).join('');
 
@@ -326,4 +340,5 @@
   </script>
 
 </body>
+
 </html>

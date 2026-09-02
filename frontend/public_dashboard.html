@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATLAS - Public Traffic Dashboard</title>
+  <title>ATLAS</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -33,49 +37,54 @@
     }
   </script>
 </head>
+
 <body class="bg-atlas-bg text-atlas-text font-sans antialiased min-h-screen flex flex-col">
 
-  <!-- Header TopBar (Doc Page 8 Wireframe) -->
   <header class="h-16 bg-atlas-dark text-white px-6 flex justify-between items-center sticky top-0 z-30 shadow-md">
     <div class="flex items-center space-x-4">
       <a href="landing_page.html" class="flex items-center space-x-3">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdTZvGDfYyO2-xkfP_3_opnRBid4RenHaWuNoFHH8tKjHIFDa75caWEtJvmI61EMsKsEAFo8O4F5GJAKQz_RLZbrtmA9-2Y7iMaVK0ic8za43NEARd4TZz2xKS3cr8xbs6LVzL1Ll0imJCfPUo367E9mfMSM537VBb0HTiJTE-JzNbFJ1sMwicu2NCM_MxKjMhPNWk2u8yQ80beq4o_ST72QbsXsffhwRqQpUnPvMXgV6cYUJG11wshw" alt="ATLAS Logo" class="h-8 w-auto object-contain">
-        <span class="font-display font-bold text-xl tracking-wide uppercase">ATLAS PUBLIC</span>
+        <img src="logo.png" alt="ATLAS Logo" class="h-8 w-8 rounded-full aspect-square object-cover">
+        <span class="font-display font-bold text-xl tracking-wide uppercase">ATLAS</span>
       </a>
-      <span class="text-xs bg-gray-800 text-gray-300 px-2.5 py-1 rounded border border-gray-700 hidden sm:inline">Read-Only City View</span>
     </div>
 
-    <!-- Actions: Use My Location | Search Area (Page 8 Wireframe) -->
     <div class="flex items-center space-x-3">
-      <button onclick="simulateLocation('within')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded shadow flex items-center gap-1">
+      <button onclick="simulateLocation('within')"
+        class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded shadow flex items-center gap-1">
         <span class="material-symbols-outlined text-sm">my_location</span> Use my location
       </button>
 
       <div class="relative hidden sm:block">
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
-        <input type="text" placeholder="Search area or junction..." class="pl-9 pr-3 py-1.5 text-xs bg-gray-800 border border-gray-700 rounded-full text-white placeholder-gray-400 focus:outline-none focus:border-atlas-red w-48">
+        <span
+          class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
+        <input type="text" placeholder="Search area or junction..."
+          class="pl-9 pr-3 py-1.5 text-xs bg-gray-800 border border-gray-700 rounded-full text-white placeholder-gray-400 focus:outline-none focus:border-atlas-red w-48">
       </div>
 
-      <a href="authentication.html" class="text-xs text-gray-300 hover:text-white px-3 py-1.5 rounded border border-gray-700">Admin Login</a>
+      <a href="authentication.html"
+        class="text-xs text-gray-300 hover:text-white px-3 py-1.5 rounded border border-gray-700">Admin Login</a>
     </div>
   </header>
 
   <!-- Proximity Rule Simulation Switcher Bar -->
-  <div class="bg-amber-50 border-b border-amber-300 px-6 py-2 flex flex-col sm:flex-row justify-between items-center text-xs">
+  <div
+    class="bg-amber-50 border-b border-amber-300 px-6 py-2 flex flex-col sm:flex-row justify-between items-center text-xs">
     <div class="flex items-center space-x-2 text-amber-900 font-medium mb-1 sm:mb-0">
       <span class="material-symbols-outlined text-sm text-amber-700">radar</span>
       <span><strong>Proximity Rule Simulator (1km Radius):</strong> Test public visibility mode</span>
     </div>
     <div class="flex space-x-2">
-      <button id="btnWithin" onclick="setProximityMode('within')" class="px-3 py-1 bg-emerald-700 text-white rounded font-bold text-[11px] shadow-sm">Simulate: Within 1km</button>
-      <button id="btnBeyond" onclick="setProximityMode('beyond')" class="px-3 py-1 bg-gray-200 text-gray-800 rounded font-bold text-[11px]">Simulate: Beyond 1km</button>
+      <button id="btnWithin" onclick="setProximityMode('within')"
+        class="px-3 py-1 bg-emerald-700 text-white rounded font-bold text-[11px] shadow-sm">Simulate: Within
+        1km</button>
+      <button id="btnBeyond" onclick="setProximityMode('beyond')"
+        class="px-3 py-1 bg-gray-200 text-gray-800 rounded font-bold text-[11px]">Simulate: Beyond 1km</button>
     </div>
   </div>
 
   <!-- Main Body Content -->
   <main class="flex-grow container mx-auto px-6 py-6 flex flex-col gap-6 max-w-[1600px] w-full">
 
-    <!-- LIVE MAP Card (Page 8 Wireframe) -->
     <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm flex flex-col relative min-h-[440px]">
       <div class="flex justify-between items-center mb-4">
         <div>
@@ -92,18 +101,24 @@
       </div>
 
       <!-- Map Canvas Area -->
-      <div class="flex-1 bg-slate-900 rounded-lg relative overflow-hidden flex items-center justify-center border border-gray-300">
+      <div
+        class="flex-1 bg-slate-900 rounded-lg relative overflow-hidden flex items-center justify-center border border-gray-300">
         <!-- City Grid Background -->
-        <div class="absolute inset-0 opacity-30 bg-[radial-gradient(#8AA8AB_1px,transparent_1px)] [background-size:24px_24px]"></div>
+        <div
+          class="absolute inset-0 opacity-30 bg-[radial-gradient(#8AA8AB_1px,transparent_1px)] [background-size:24px_24px]">
+        </div>
 
         <!-- Color-Coded Congestion Zones -->
-        <div class="absolute top-10 left-12 p-3 bg-emerald-500/20 border border-emerald-400 rounded-lg text-[11px] font-bold text-emerald-300">
+        <div
+          class="absolute top-10 left-12 p-3 bg-emerald-500/20 border border-emerald-400 rounded-lg text-[11px] font-bold text-emerald-300">
           Zone A (Smooth Flow)
         </div>
-        <div class="absolute bottom-12 left-20 p-3 bg-amber-500/20 border border-amber-400 rounded-lg text-[11px] font-bold text-amber-300">
+        <div
+          class="absolute bottom-12 left-20 p-3 bg-amber-500/20 border border-amber-400 rounded-lg text-[11px] font-bold text-amber-300">
           Zone B (Moderate Delay +8m)
         </div>
-        <div class="absolute top-16 right-24 p-3 bg-red-500/20 border border-red-400 rounded-lg text-[11px] font-bold text-red-300">
+        <div
+          class="absolute top-16 right-24 p-3 bg-red-500/20 border border-red-400 rounded-lg text-[11px] font-bold text-red-300">
           Zone C (Heavy Congestion)
         </div>
 
@@ -112,33 +127,42 @@
           <!-- WITHIN 1KM MODE CONTENT -->
           <div id="withinMode" class="w-full h-full relative">
             <svg class="absolute inset-0 w-full h-full">
-              <path d="M 180 320 Q 380 200 680 140" stroke="#10B981" stroke-width="4" fill="none" stroke-linecap="round"></path>
+              <path d="M 180 320 Q 380 200 680 140" stroke="#10B981" stroke-width="4" fill="none"
+                stroke-linecap="round"></path>
             </svg>
-            <div class="absolute top-[130px] right-[240px] bg-emerald-600 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl flex items-center gap-1.5 border-2 border-white animate-pulse">
-              <span class="material-symbols-outlined text-sm">emergency</span> AMB-902 (Exact Position: 450m ahead • Speed 62km/h)
+            <div
+              class="absolute top-[130px] right-[240px] bg-emerald-600 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl flex items-center gap-1.5 border-2 border-white animate-pulse">
+              <span class="material-symbols-outlined text-sm">emergency</span> AMB-902 (Exact Position: 450m ahead •
+              Speed 62km/h)
             </div>
-            <div class="absolute bottom-4 left-4 bg-emerald-900/90 text-emerald-200 text-xs px-3 py-2 rounded border border-emerald-600 backdrop-blur">
-              <span class="font-bold">Proximity Rule Match:</span> You are within 900m of Corridor AMB-902. Exact coordinates & route displayed.
+            <div
+              class="absolute bottom-4 left-4 bg-emerald-900/90 text-emerald-200 text-xs px-3 py-2 rounded border border-emerald-600 backdrop-blur">
+              <span class="font-bold">Proximity Rule Match:</span> You are within 900m of Corridor AMB-902. Exact
+              coordinates & route displayed.
             </div>
           </div>
 
           <!-- BEYOND 1KM MODE CONTENT -->
           <div id="beyondMode" class="w-full h-full relative hidden">
-            <div class="absolute top-[140px] right-[300px] bg-amber-600 text-white text-xs px-3 py-2 rounded-lg font-bold shadow-xl flex items-center gap-2 border border-white">
-              <span class="material-symbols-outlined text-sm">warning</span> Active Corridor Nearby (Beyond 1km - Coordinates Masked)
+            <div
+              class="absolute top-[140px] right-[300px] bg-amber-600 text-white text-xs px-3 py-2 rounded-lg font-bold shadow-xl flex items-center gap-2 border border-white">
+              <span class="material-symbols-outlined text-sm">warning</span> Active Corridor Nearby (Beyond 1km -
+              Coordinates Masked)
             </div>
-            <div class="absolute bottom-4 left-4 bg-gray-900/90 text-gray-300 text-xs px-3 py-2 rounded border border-gray-700 backdrop-blur">
-              <span class="font-bold">Proximity Rule Match:</span> Beyond 1km radius. Coordinates hidden per privacy & traffic management security rule.
+            <div
+              class="absolute bottom-4 left-4 bg-gray-900/90 text-gray-300 text-xs px-3 py-2 rounded border border-gray-700 backdrop-blur">
+              <span class="font-bold">Proximity Rule Match:</span> Beyond 1km radius. Coordinates hidden per privacy &
+              traffic management security rule.
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- GENERAL ALERTS STRIP (Page 8 Wireframe) -->
     <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm">
       <h3 class="font-bold text-xs uppercase tracking-wider text-atlas-text mb-3 flex items-center gap-2">
-        <span class="material-symbols-outlined text-atlas-orange">notifications</span> GENERAL ALERTS STRIP — read-only, zone-level congestion status
+        <span class="material-symbols-outlined text-atlas-orange">notifications</span> GENERAL ALERTS STRIP — read-only,
+        zone-level congestion status
       </h3>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
@@ -168,22 +192,21 @@
       </div>
     </div>
 
-    <!-- NOTES Box (Page 8 Wireframe) -->
     <div class="bg-amber-50/80 border border-amber-300 rounded-xl p-5 text-xs text-amber-950">
       <h4 class="font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1">
         <span class="material-symbols-outlined text-sm text-amber-700">sticky_note_2</span> NOTES
       </h4>
       <ul class="space-y-1 list-disc list-inside text-amber-900">
         <li>No controls, no admin data, no settings access.</li>
-        <li>Requires the user's live location (or a manually selected area) to evaluate the 1km proximity rule against active corridors.</li>
+        <li>Requires the user's live location (or a manually selected area) to evaluate the 1km proximity rule against
+          active corridors.</li>
       </ul>
     </div>
 
   </main>
 
   <footer class="bg-white border-t border-gray-200 py-3 px-8 text-xs text-gray-500 flex justify-between items-center">
-    <span>ATLAS Public Portal — AI Traffic Logistics & Adaptive System</span>
-    <span>CIPHER Team • Page 8 of 9 Reference Wireframe</span>
+    <span>ATLAS</span>
   </footer>
 
   <script>
@@ -212,4 +235,5 @@
   </script>
 
 </body>
+
 </html>

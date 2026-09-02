@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATLAS - Variables & Common Settings</title>
+  <title>ATLAS</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -33,45 +37,52 @@
     }
   </script>
 </head>
+
 <body class="bg-atlas-bg text-atlas-text font-sans antialiased min-h-screen flex">
 
   <!-- Sidebar Component -->
   <aside class="w-64 bg-atlas-dark text-white flex flex-col fixed inset-y-0 left-0 z-30 shadow-lg">
     <!-- Brand logo -->
     <a href="landing_page.html" class="p-6 border-b border-gray-700 flex items-center space-x-3">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdTZvGDfYyO2-xkfP_3_opnRBid4RenHaWuNoFHH8tKjHIFDa75caWEtJvmI61EMsKsEAFo8O4F5GJAKQz_RLZbrtmA9-2Y7iMaVK0ic8za43NEARd4TZz2xKS3cr8xbs6LVzL1Ll0imJCfPUo367E9mfMSM537VBb0HTiJTE-JzNbFJ1sMwicu2NCM_MxKjMhPNWk2u8yQ80beq4o_ST72QbsXsffhwRqQpUnPvMXgV6cYUJG11wshw" alt="ATLAS Logo" class="h-9 w-auto object-contain">
+      <img src="logo.png" alt="ATLAS Logo" class="h-9 w-9 rounded-full aspect-square object-cover">
       <div>
         <h1 class="font-display font-bold text-xl tracking-wide leading-none text-white">ATLAS</h1>
-        <p class="text-[10px] text-gray-400 mt-1">AI Traffic Logistics System</p>
       </div>
     </a>
 
     <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-      <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="dashboard.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">dashboard</span>
         <span>Dashboard</span>
       </a>
-      <a href="prediction.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="prediction.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">online_prediction</span>
         <span>Prediction</span>
       </a>
-      <a href="green_corridor_management.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="green_corridor_management.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">emergency</span>
         <span>Green Corridor</span>
       </a>
-      <a href="traffic_control.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="traffic_control.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">traffic</span>
         <span>Alerts & Traffic Control</span>
       </a>
-      <a href="variables_settings.html" class="flex items-center space-x-3 px-4 py-3 bg-atlas-red text-white rounded-lg font-medium text-sm">
+      <a href="variables_settings.html"
+        class="flex items-center space-x-3 px-4 py-3 bg-atlas-red text-white rounded-lg font-medium text-sm">
         <span class="material-symbols-outlined text-xl">settings</span>
         <span>Variables / Settings</span>
       </a>
-      <a href="architecture.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="architecture.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">schema</span>
         <span>System Architecture</span>
       </a>
-      <a href="public_dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+      <a href="public_dashboard.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
         <span class="material-symbols-outlined text-xl">public</span>
         <span>Public View</span>
       </a>
@@ -91,7 +102,6 @@
   <!-- Main Content Area -->
   <div class="ml-64 flex-1 flex flex-col min-h-screen">
 
-    <!-- Topbar Header (Doc Page 7 Wireframe) -->
     <header class="h-16 bg-atlas-dark text-white px-8 flex justify-between items-center sticky top-0 z-20 shadow-md">
       <div class="flex items-center space-x-6">
         <span class="font-display font-bold text-lg tracking-wide uppercase text-atlas-red flex items-center gap-2">
@@ -102,7 +112,8 @@
       </div>
 
       <div class="flex items-center space-x-3">
-        <button onclick="alert('System Configuration Saved & Broadcasted to Central State DB')" class="px-4 py-2 bg-atlas-red hover:bg-atlas-red-hover text-white font-bold text-xs rounded shadow transition-colors flex items-center gap-1">
+        <button onclick="alert('System Configuration Saved & Broadcasted to Central State DB')"
+          class="px-4 py-2 bg-atlas-red hover:bg-atlas-red-hover text-white font-bold text-xs rounded shadow transition-colors flex items-center gap-1">
           <span class="material-symbols-outlined text-sm">save</span> Save Config Changes
         </button>
       </div>
@@ -111,7 +122,6 @@
     <!-- Main Dashboard Content -->
     <main class="p-8 flex-1 flex flex-col gap-6 max-w-[1600px] w-full mx-auto">
 
-      <!-- 4 Grid Cards (Page 7 Wireframe) -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         <!-- 1. CONGESTION THRESHOLDS -->
@@ -170,17 +180,23 @@
                 </div>
                 <div class="flex justify-between items-center">
                   <span class="font-bold text-atlas-text">Zone 2 — North Medical Corridor</span>
-                  <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">8 Junctions</span>
+                  <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">8
+                    Junctions</span>
                 </div>
                 <div class="flex justify-between items-center">
                   <span class="font-bold text-atlas-text">Zone 3 — East Industrial Corridor</span>
-                  <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">15 Junctions</span>
+                  <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">15
+                    Junctions</span>
                 </div>
               </div>
 
               <div class="flex space-x-2">
-                <button onclick="alert('Zone Creation Dialog')" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded font-semibold text-atlas-text text-xs">+ Add Zone</button>
-                <button onclick="alert('Zone Merge Wizard')" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded font-semibold text-atlas-text text-xs">Merge Groupings</button>
+                <button onclick="alert('Zone Creation Dialog')"
+                  class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded font-semibold text-atlas-text text-xs">+
+                  Add Zone</button>
+                <button onclick="alert('Zone Merge Wizard')"
+                  class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded font-semibold text-atlas-text text-xs">Merge
+                  Groupings</button>
               </div>
             </div>
           </div>
@@ -225,13 +241,13 @@
           </div>
         </div>
 
-        <!-- 4. PROXIMITY RULE (Doc Page 7 & Page 2 Key Rule) -->
         <div class="bg-amber-50/70 rounded-xl border-2 border-amber-300 p-6 shadow-sm flex flex-col justify-between">
           <div>
             <h3 class="font-bold text-xs uppercase tracking-wider text-amber-900 mb-1 flex items-center gap-2">
               <span class="material-symbols-outlined text-amber-700">radar</span> PROXIMITY RULE (PUBLIC VISIBILITY)
             </h3>
-            <p class="text-xs text-amber-800 mb-4">Public visibility radius (default 1km) for green corridor exact location</p>
+            <p class="text-xs text-amber-800 mb-4">Public visibility radius (default 1km) for green corridor exact
+              location</p>
 
             <div class="p-4 bg-white rounded-lg border border-amber-200 space-y-4 text-xs">
               <div>
@@ -239,13 +255,16 @@
                   <span class="font-bold text-amber-950">Active Public Radius:</span>
                   <span id="radiusVal" class="font-bold text-atlas-red font-mono">1.0 km</span>
                 </div>
-                <input type="range" min="0.5" max="5.0" step="0.5" value="1.0" oninput="document.getElementById('radiusVal').textContent = this.value + ' km'" class="w-full accent-atlas-red cursor-pointer">
+                <input type="range" min="0.5" max="5.0" step="0.5" value="1.0"
+                  oninput="document.getElementById('radiusVal').textContent = this.value + ' km'"
+                  class="w-full accent-atlas-red cursor-pointer">
               </div>
 
               <div class="p-3 bg-amber-50 rounded border border-amber-200 text-[11px] text-amber-900 space-y-1">
                 <p><strong>Rule Behavior:</strong></p>
                 <p>• <strong>Within Radius:</strong> Public map displays exact GPS coordinates + route polyline.</p>
-                <p>• <strong>Beyond Radius:</strong> Public map masks coordinates and shows generic "Active corridor nearby" alert.</p>
+                <p>• <strong>Beyond Radius:</strong> Public map masks coordinates and shows generic "Active corridor
+                  nearby" alert.</p>
               </div>
             </div>
           </div>
@@ -253,13 +272,13 @@
 
       </div>
 
-      <!-- NOTES Box (Page 7 Wireframe) -->
       <div class="bg-amber-50/80 border border-amber-300 rounded-xl p-5 text-xs text-amber-950">
         <h4 class="font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1">
           <span class="material-symbols-outlined text-sm text-amber-700">sticky_note_2</span> NOTES
         </h4>
         <ul class="space-y-1 list-disc list-inside text-amber-900">
-          <li>These are the values labelled "Variables - common": shared config that both the Prediction Engine and Green Corridor Engine read from.</li>
+          <li>These are the values labelled "Variables - common": shared config that both the Prediction Engine and
+            Green Corridor Engine read from.</li>
           <li>Admin-only page.</li>
         </ul>
       </div>
@@ -267,11 +286,11 @@
     </main>
 
     <footer class="bg-white border-t border-gray-200 py-3 px-8 text-xs text-gray-500 flex justify-between items-center">
-      <span>ATLAS — AI Traffic Logistics & Adaptive System</span>
-      <span>CIPHER Team • Page 7 of 9 Reference Wireframe</span>
+      <span>ATLAS</span>
     </footer>
 
   </div>
 
 </body>
+
 </html>
