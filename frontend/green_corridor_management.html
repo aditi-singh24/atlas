@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS - Green Corridor Management</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'atlas-bg': '#F9F9F9',
+            'atlas-dark': '#2F3131',
+            'atlas-text': '#1A1C1C',
+            'atlas-muted': '#566062',
+            'atlas-red': '#B0323A',
+            'atlas-orange': '#D97746',
+            'atlas-green': '#10B981',
+            'atlas-teal': '#8AA8AB',
+            'atlas-card': '#FFFFFF',
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-atlas-bg text-atlas-text font-sans antialiased min-h-screen flex">
+
+  <!-- Sidebar Component -->
+  <aside class="w-64 bg-atlas-dark text-white flex flex-col fixed inset-y-0 left-0 z-30 shadow-lg">
+    <div class="p-6 border-b border-gray-700 flex items-center space-x-3">
+      <div class="w-10 h-10 rounded bg-atlas-red text-white font-bold flex items-center justify-center font-display text-xl">A</div>
+      <div>
+        <h1 class="font-display font-bold text-xl tracking-wide leading-none">ATLAS</h1>
+        <p class="text-[11px] text-gray-400 mt-1">AI Traffic Logistics System</p>
+      </div>
+    </div>
+
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+      <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="prediction.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">online_prediction</span>
+        <span>Prediction</span>
+      </a>
+      <a href="green_corridor_management.html" class="flex items-center space-x-3 px-4 py-3 bg-emerald-600 text-white rounded-lg font-medium text-sm">
+        <span class="material-symbols-outlined text-xl">emergency</span>
+        <span>Green Corridor</span>
+      </a>
+      <a href="traffic_control.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">traffic</span>
+        <span>Alerts & Traffic Control</span>
+      </a>
+      <a href="variables_settings.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">settings</span>
+        <span>Variables / Settings</span>
+      </a>
+      <a href="architecture.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">schema</span>
+        <span>System Architecture</span>
+      </a>
+      <a href="public_dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">public</span>
+        <span>Public View</span>
+      </a>
+    </nav>
+
+    <div class="p-4 border-t border-gray-700">
+      <div class="bg-gray-800/80 p-3 rounded-lg flex items-center space-x-3">
+        <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+        <div>
+          <p class="text-xs font-semibold text-white">Green Corridor Engine</p>
+          <p class="text-[10px] text-emerald-400 font-medium">Preemption: ACTIVE</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="ml-64 flex-1 flex flex-col min-h-screen">
+
+    <!-- Topbar Header (Doc Page 5 Wireframe) -->
+    <header class="h-16 bg-atlas-dark text-white px-8 flex justify-between items-center sticky top-0 z-20 shadow-md">
+      <div class="flex items-center space-x-6">
+        <span class="font-display font-bold text-lg tracking-wide uppercase text-emerald-400 flex items-center gap-2">
+          <span class="material-symbols-outlined text-emerald-400">emergency</span> GREEN CORRIDOR
+        </span>
+        <div class="h-4 w-px bg-gray-600"></div>
+        <span class="text-xs px-3 py-1 bg-emerald-900/80 text-emerald-300 rounded font-semibold border border-emerald-700 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Active runs: 2
+        </span>
+      </div>
+
+      <!-- Manual Trigger Action Button (Doc Page 5) -->
+      <div>
+        <button onclick="alert('Manual Corridor Trigger Initialized for Ambulance Dispatch!')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg shadow transition-colors flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">add_alert</span> Manual trigger +
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <main class="p-8 flex-1 flex flex-col gap-6 max-w-[1600px] w-full mx-auto">
+
+      <!-- Top Section: LIVE MAP & ACTIVE RUN (Page 5 Wireframe) -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- LIVE MAP Box (Page 5) -->
+        <div class="lg:col-span-2 bg-white rounded-xl border border-gray-300 p-6 shadow-sm flex flex-col min-h-[380px] relative">
+          <div class="flex justify-between items-center mb-3">
+            <div>
+              <h2 class="font-bold text-sm uppercase tracking-wider text-atlas-text flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600">map</span> LIVE MAP
+              </h2>
+              <p class="text-xs text-atlas-muted">(ambulance position, dynamic route drawn, signal states along path)</p>
+            </div>
+            <div class="flex items-center space-x-3 text-xs">
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Signal PREEMPTED</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Queued</span>
+            </div>
+          </div>
+
+          <!-- Map Simulation Canvas -->
+          <div class="flex-1 bg-slate-950 rounded-lg relative overflow-hidden flex items-center justify-center border border-gray-300">
+            <!-- Grid Pattern -->
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#10B981_1px,transparent_1px)] [background-size:20px_20px]"></div>
+
+            <!-- Route Path Line -->
+            <svg class="absolute inset-0 w-full h-full">
+              <path d="M 100 280 L 250 200 L 480 140 L 680 80" stroke="#10B981" stroke-width="5" fill="none" stroke-linecap="round"></path>
+            </svg>
+
+            <!-- Signal States along Path -->
+            <div class="absolute bottom-[80px] left-[100px] bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded font-bold">Junction 1: GREEN</div>
+            <div class="absolute bottom-[160px] left-[250px] bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded font-bold">Junction 2: GREEN</div>
+            <div class="absolute top-[120px] left-[480px] bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded font-bold">Junction 3: PREEMPTING</div>
+            <div class="absolute top-[60px] left-[680px] bg-amber-600 text-white text-[10px] px-2 py-0.5 rounded font-bold">Junction 4: HOLD</div>
+
+            <!-- Moving Ambulance Marker -->
+            <div class="absolute bottom-[150px] left-[220px] bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl flex items-center gap-1 border-2 border-white animate-bounce">
+              <span class="material-symbols-outlined text-sm">medical_services</span> AMB-902 (Live GPS)
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIVE RUN Panel (Page 5) -->
+        <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm flex flex-col justify-between">
+          <div class="border-b border-gray-200 pb-3 mb-4">
+            <h2 class="font-bold text-sm uppercase tracking-wider text-atlas-text flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-600">telemetry</span> ACTIVE RUN
+            </h2>
+            <p class="text-xs text-atlas-muted">Live Emergency Telemetry</p>
+          </div>
+
+          <div class="space-y-3 text-xs flex-1">
+            <div class="p-3 bg-emerald-50 rounded-lg border border-emerald-200 space-y-2">
+              <div class="flex justify-between">
+                <span class="text-emerald-800 font-medium">Ambulance ID:</span>
+                <span class="font-bold text-emerald-950">AMB-902 (Apex Trauma Unit)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-emerald-800 font-medium">Origin -&gt; Dest:</span>
+                <span class="font-bold text-emerald-950">City General -&gt; St. Jude Hospital</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-emerald-800 font-medium">ETA:</span>
+                <span class="font-bold text-emerald-700 text-sm">4 min 12 sec</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-emerald-800 font-medium">Signals preempted:</span>
+                <span class="font-bold text-emerald-950">5 / 6 Junctions</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-emerald-800 font-medium">Status:</span>
+                <span class="px-2 py-0.5 bg-emerald-600 text-white rounded font-bold text-[10px]">ACTIVE CORRIDOR</span>
+              </div>
+            </div>
+
+            <!-- Second Active Run Summary -->
+            <div class="p-3 bg-gray-50 rounded-lg border border-gray-200 space-y-1">
+              <div class="flex justify-between">
+                <span class="font-bold text-atlas-text">AMB-408</span>
+                <span class="text-amber-700 font-semibold">ETA 11 min</span>
+              </div>
+              <p class="text-[11px] text-atlas-muted">East District -&gt; Metro Cardiac Center</p>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-gray-200 text-center">
+            <span class="text-[11px] text-atlas-muted">Auto-applied by Core TMS Decision Layer</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ACTIVE + RECENT CORRIDOR RUNS LIST (Page 5 Wireframe) -->
+      <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-bold text-xs uppercase tracking-wider text-atlas-text flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-600">table_view</span> ACTIVE + RECENT CORRIDOR RUNS LIST
+          </h3>
+          <span class="text-xs text-atlas-muted font-medium">(sortable table: time, route, zones crossed, delay saved)</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-atlas-text">
+            <thead class="bg-gray-100 uppercase text-[10px] text-atlas-muted border-b border-gray-300 font-bold">
+              <tr>
+                <th class="py-3 px-4">Time</th>
+                <th class="py-3 px-4">Ambulance ID</th>
+                <th class="py-3 px-4">Route</th>
+                <th class="py-3 px-4">Zones Crossed</th>
+                <th class="py-3 px-4">Delay Saved</th>
+                <th class="py-3 px-4">Signals Preempted</th>
+                <th class="py-3 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr class="bg-emerald-50/50 hover:bg-emerald-50">
+                <td class="py-3 px-4 font-mono font-bold text-emerald-900">04:41 PM</td>
+                <td class="py-3 px-4 font-bold text-emerald-900">AMB-902</td>
+                <td class="py-3 px-4">City General -&gt; St. Jude Hospital</td>
+                <td class="py-3 px-4">Central, North Corridor</td>
+                <td class="py-3 px-4 font-bold text-emerald-700">8.4 mins saved</td>
+                <td class="py-3 px-4">5 / 6</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 bg-emerald-600 text-white rounded font-bold text-[10px]">ACTIVE</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="py-3 px-4 font-mono text-gray-600">04:30 PM</td>
+                <td class="py-3 px-4 font-bold text-atlas-text">AMB-408</td>
+                <td class="py-3 px-4">East District -&gt; Metro Cardiac</td>
+                <td class="py-3 px-4">East Commercial</td>
+                <td class="py-3 px-4 font-bold text-emerald-700">6.1 mins saved</td>
+                <td class="py-3 px-4">4 / 4</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 bg-emerald-600 text-white rounded font-bold text-[10px]">ACTIVE</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="py-3 px-4 font-mono text-gray-500">03:15 PM</td>
+                <td class="py-3 px-4 text-gray-700">AMB-112</td>
+                <td class="py-3 px-4 text-gray-700">West Bypass -&gt; Trauma Center</td>
+                <td class="py-3 px-4 text-gray-700">West, Central</td>
+                <td class="py-3 px-4 font-bold text-emerald-700">12.0 mins saved</td>
+                <td class="py-3 px-4 text-gray-700">7 / 7</td>
+                <td class="py-3 px-4"><span class="px-2 py-0.5 bg-gray-200 text-gray-700 rounded font-bold text-[10px]">COMPLETED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- NOTES Box (Page 5 Wireframe) -->
+      <div class="bg-amber-50/80 border border-amber-300 rounded-xl p-5 text-xs text-amber-950">
+        <h4 class="font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-amber-700">sticky_note_2</span> NOTES
+        </h4>
+        <ul class="space-y-1 list-disc list-inside text-amber-900">
+          <li>This page is admin-only. Public users see a filtered version (next page) based on the 1km proximity rule.</li>
+          <li>Signal preemption entries here are auto-applied by the Core TMS layer, shown here for admin visibility/override.</li>
+        </ul>
+      </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-3 px-8 text-xs text-gray-500 flex justify-between items-center">
+      <span>ATLAS — AI Traffic Logistics & Adaptive System</span>
+      <span>CIPHER Team • Page 5 of 9 Reference Wireframe</span>
+    </footer>
+
+  </div>
+
+</body>
+</html>
