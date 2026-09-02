@@ -303,5 +303,37 @@
 
   </div>
 
+  <script>
+    async function loadDashboardApiData() {
+      try {
+        const response = await fetch('http://localhost:5000/api/predictions');
+        if (response.ok) {
+          const predictions = await response.json();
+          console.log('[ATLAS Admin Dashboard API Feed Loaded]:', predictions);
+
+          // Update Alerts Strip dynamically if severe/high predictions exist
+          const alertStripContainer = document.querySelector('.bg-amber-50 .flex.flex-col.sm\\:flex-row');
+          if (alertStripContainer && predictions.length > 0) {
+            const highRisk = predictions.filter(p => p.alertLevel === 'HIGH' || p.alertLevel === 'SEVERE');
+            if (highRisk.length > 0) {
+              alertStripContainer.innerHTML = highRisk.map(p => `
+                <a href="traffic_control.html?zone=${p.segmentId}" class="flex-1 p-3 bg-white rounded-lg border border-amber-200 hover:border-atlas-red transition-all flex items-center justify-between text-xs cursor-pointer shadow-2xs">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full ${p.alertLevel === 'SEVERE' ? 'bg-atlas-red' : 'bg-atlas-orange'}"></span>
+                    <span class="font-bold text-atlas-text">${p.segmentName}</span>
+                  </div>
+                  <span class="${p.alertLevel === 'SEVERE' ? 'text-atlas-red bg-red-50' : 'text-atlas-orange bg-amber-50'} font-semibold px-2 py-0.5 rounded">${p.alertLevel} (${p.predictedCongestion}% Congestion)</span>
+                </a>
+              `).join('');
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('[ATLAS Backend API Offline]: Using default simulated state');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadDashboardApiData);
+  </script>
+
 </body>
 </html>

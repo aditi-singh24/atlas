@@ -305,6 +305,47 @@
         alert('Manual Override Mode DISABLED. Core TMS Auto-apply restored.');
       }
     }
+
+    // Connect to GET /api/predictions and populate Alert Table dynamically
+    async function loadTrafficControlApiData() {
+      try {
+        const response = await fetch('http://localhost:5000/api/predictions');
+        if (response.ok) {
+          const predictions = await response.json();
+          console.log('[ATLAS Traffic Control API Feed Loaded]:', predictions);
+
+          const tableBody = document.getElementById('alertTableBody');
+          if (tableBody && predictions.length > 0) {
+            tableBody.innerHTML = predictions.map(p => {
+              const causeText = p.activeEvents.length > 0 ? `Event (${p.activeEvents[0]})` : `Weather (${p.weatherCondition})`;
+              const badgeClass = p.alertLevel === 'SEVERE' ? 'bg-atlas-red text-white' :
+                                 p.alertLevel === 'HIGH' ? 'bg-atlas-orange text-white' :
+                                 p.alertLevel === 'MEDIUM' ? 'bg-amber-600 text-white' : 'bg-emerald-600 text-white';
+
+              return `
+                <tr class="hover:bg-gray-50 font-sans">
+                  <td class="py-3 px-4 font-bold text-atlas-text flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full ${p.alertLevel === 'SEVERE' ? 'bg-atlas-red' : 'bg-atlas-orange'}"></span>
+                    ${p.segmentName} (${p.zone})
+                  </td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 ${badgeClass} rounded font-bold text-[10px]">${p.alertLevel}</span></td>
+                  <td class="py-3 px-4 font-medium text-atlas-muted">${causeText}</td>
+                  <td class="py-3 px-4 font-mono text-gray-600">${new Date(p.timestamp).toLocaleTimeString()}</td>
+                  <td class="py-3 px-4 font-medium">Auto-apply Signal Adjustment (${p.predictedCongestion}%)</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">AUTO-APPLIED</span></td>
+                  <td class="py-3 px-4">
+                    <button onclick="alert('Manual Override triggered for ${p.segmentId}')" class="px-2.5 py-1 bg-atlas-dark text-white rounded hover:bg-gray-800 text-[10px] font-bold">Override</button>
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+      } catch (err) {
+        console.warn('[ATLAS Traffic Control API Offline]: Using default simulated state');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadTrafficControlApiData);
   </script>
 
 </body>

@@ -291,13 +291,31 @@
       }
     }
 
-    // Fetch API Deliverable predictions from Express Backend
+    // Fetch API Deliverable predictions from Express Backend and update DOM
     async function loadApiPredictions() {
       try {
         const response = await fetch('http://localhost:5000/api/predictions');
         if (response.ok) {
           const predictions = await response.json();
           console.log('[ATLAS Prediction API Feed Loaded]:', predictions);
+
+          // Populate Zone Selector dynamically
+          const zoneSelect = document.getElementById('zoneSelect');
+          if (zoneSelect && predictions.length > 0) {
+            zoneSelect.innerHTML = predictions.map(p => 
+              `<option value="${p.segmentId}">${p.segmentName} (${p.zone}) - ${p.alertLevel}</option>`
+            ).join('');
+
+            // Add live indicator badge
+            const header = document.querySelector('header');
+            if (header && !document.getElementById('apiConnectedBadge')) {
+              const badge = document.createElement('span');
+              badge.id = 'apiConnectedBadge';
+              badge.className = 'text-xs bg-emerald-900/80 text-emerald-300 border border-emerald-600 px-2.5 py-1 rounded font-semibold flex items-center gap-1.5';
+              badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> API Connected';
+              header.appendChild(badge);
+            }
+          }
         }
       } catch (err) {
         console.warn('[ATLAS Prediction API Offline]: Running with local simulated feed');
