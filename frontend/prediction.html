@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'atlas-bg': '#F9F9F9',
+            'atlas-dark': '#2F3131',
+            'atlas-text': '#1A1C1C',
+            'atlas-muted': '#566062',
+            'atlas-red': '#B0323A',
+            'atlas-orange': '#D97746',
+            'atlas-green': '#10B981',
+            'atlas-teal': '#8AA8AB',
+            'atlas-card': '#FFFFFF',
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-atlas-bg text-atlas-text font-sans antialiased min-h-screen flex">
+
+  <!-- Sidebar Component -->
+  <aside class="w-64 bg-atlas-dark text-white flex flex-col fixed inset-y-0 left-0 z-30 shadow-lg">
+    <!-- Brand logo -->
+    <a href="landing_page.html" class="p-6 border-b border-gray-700 flex items-center space-x-3">
+      <img src="logo.png" alt="ATLAS Logo" class="h-9 w-9 rounded-full aspect-square object-cover">
+      <div>
+        <h1 class="font-display font-bold text-xl tracking-wide leading-none text-white">ATLAS</h1>
+        <p class="text-[9px] text-gray-400 mt-1 leading-tight max-w-[150px]">AI Traffic Logistics &amp; Adaptive System
+        </p>
+      </div>
+    </a>
+
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+      <a href="dashboard.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="prediction.html"
+        class="flex items-center space-x-3 px-4 py-3 bg-atlas-red text-white rounded-lg font-medium text-sm">
+        <span class="material-symbols-outlined text-xl">online_prediction</span>
+        <span>Prediction</span>
+      </a>
+      <a href="green_corridor_management.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">emergency</span>
+        <span>Green Corridor</span>
+      </a>
+      <a href="traffic_control.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">traffic</span>
+        <span>Alerts & Traffic Control</span>
+      </a>
+      <a href="variables_settings.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">settings</span>
+        <span>Variables / Settings</span>
+      </a>
+      <a href="architecture.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">schema</span>
+        <span>System Architecture</span>
+      </a>
+      <a href="public_dashboard.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">public</span>
+        <span>Public View</span>
+      </a>
+    </nav>
+
+    <div class="p-4 border-t border-gray-700">
+      <div class="bg-gray-800/80 p-3 rounded-lg flex items-center space-x-3">
+        <span class="w-3 h-3 rounded-full bg-atlas-green animate-pulse"></span>
+        <div>
+          <p class="text-xs font-semibold text-white">Prediction Engine: Active</p>
+          <p class="text-[10px] text-gray-400">ML Forecast Horizon: 24h</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="ml-64 flex-1 flex flex-col min-h-screen">
+
+    <header class="h-16 bg-atlas-dark text-white px-8 flex justify-between items-center sticky top-0 z-20 shadow-md">
+      <div class="flex items-center space-x-6">
+        <span class="font-display font-bold text-lg tracking-wide uppercase text-atlas-red">PREDICTION</span>
+        <div class="h-4 w-px bg-gray-600"></div>
+        <!-- Zone Selector -->
+        <div class="flex items-center space-x-2 text-xs bg-gray-800 px-3 py-1.5 rounded border border-gray-600">
+          <span class="material-symbols-outlined text-sm text-atlas-orange">location_on</span>
+          <span class="text-gray-300">Zone:</span>
+          <select id="zoneSelect"
+            class="bg-transparent text-white font-medium focus:outline-none cursor-pointer text-xs">
+            <option value="all">Central City Zone 1</option>
+            <option value="north">North Highway Junction</option>
+            <option value="south">South Bypass Zone</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <span class="text-xs text-gray-300 font-medium">Time range:</span>
+        <div class="bg-gray-800 p-1 rounded-lg border border-gray-600 flex space-x-1 text-xs">
+          <button class="time-btn active px-3 py-1 bg-atlas-red text-white font-semibold rounded shadow-sm">1h</button>
+          <button class="time-btn px-3 py-1 text-gray-300 hover:text-white font-semibold rounded">6h</button>
+          <button class="time-btn px-3 py-1 text-gray-300 hover:text-white font-semibold rounded">24h</button>
+          <button class="time-btn px-3 py-1 text-gray-300 hover:text-white font-semibold rounded">7d</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <main class="p-8 flex-1 flex flex-col gap-6 max-w-[1600px] w-full mx-auto">
+
+      <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm flex flex-col relative">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h2 class="font-bold text-sm uppercase tracking-wider text-atlas-text flex items-center gap-2">
+              <span class="material-symbols-outlined text-atlas-red">show_chart</span> CONGESTION FORECAST GRAPH
+            </h2>
+            <p class="text-xs text-atlas-muted">(predicted vs actual, per zone, timeline slider)</p>
+          </div>
+          <div class="flex items-center space-x-4 text-xs font-semibold">
+            <span class="flex items-center gap-1 text-atlas-teal">
+              <span class="w-3 h-1 bg-atlas-teal inline-block rounded"></span> Actual Traffic
+            </span>
+            <span class="flex items-center gap-1 text-atlas-red">
+              <span class="w-3 h-1 bg-atlas-red inline-block rounded"></span> Predicted Trend
+            </span>
+            <span id="activeOverlayTag" class="text-xs bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded hidden">
+              Overlay Active
+            </span>
+          </div>
+        </div>
+
+        <!-- SVG Forecast Chart -->
+        <div class="h-[280px] w-full relative bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <svg class="w-full h-full overflow-visible" viewBox="0 0 800 220" preserveAspectRatio="none">
+            <!-- Grid Lines -->
+            <line x1="0" y1="40" x2="800" y2="40" stroke="#E2E8F0" stroke-dasharray="4"></line>
+            <line x1="0" y1="90" x2="800" y2="90" stroke="#E2E8F0" stroke-dasharray="4"></line>
+            <line x1="0" y1="140" x2="800" y2="140" stroke="#E2E8F0" stroke-dasharray="4"></line>
+            <line x1="0" y1="190" x2="800" y2="190" stroke="#E2E8F0" stroke-dasharray="4"></line>
+
+            <!-- Actual Traffic Path (Teal) -->
+            <path d="M 0 170 Q 150 160 300 110 T 450 120" stroke="#8AA8AB" stroke-width="3" fill="none"></path>
+
+            <!-- Predicted Traffic Path (Red) -->
+            <path id="predictionPath" d="M 450 120 Q 550 60 650 45 T 800 90" stroke="#B0323A" stroke-width="3.5"
+              fill="none" stroke-dasharray="6 2"></path>
+
+            <!-- Interactive Overlay Curve (Orange/Amber - Triggered by lower panels) -->
+            <path id="overlayPath" d="M 0 170 Q 200 180 400 130 T 800 30" stroke="#D97746" stroke-width="2.5"
+              fill="none" stroke-dasharray="3 3" opacity="0.2"></path>
+
+            <!-- Live Marker -->
+            <circle cx="450" cy="120" r="5" fill="#B0323A" class="animate-ping"></circle>
+            <circle cx="450" cy="120" r="4" fill="#B0323A"></circle>
+          </svg>
+
+          <div class="mt-4 flex items-center space-x-4">
+            <span class="text-xs text-atlas-muted font-mono">04:00 PM</span>
+            <input type="range" min="0" max="100" value="60" class="w-full accent-atlas-red cursor-pointer">
+            <span class="text-xs font-bold text-atlas-red font-mono">05:00 PM (NOW)</span>
+            <span class="text-xs text-atlas-muted font-mono">06:00 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- 1. HISTORY TRENDS -->
+        <div onclick="toggleOverlay('history')"
+          class="group bg-white rounded-xl border border-gray-300 p-6 shadow-sm hover:border-atlas-red transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <h3
+              class="font-bold text-xs uppercase tracking-wider text-atlas-text group-hover:text-atlas-red transition-colors flex items-center gap-2">
+              <span class="material-symbols-outlined text-atlas-red">history</span> HISTORY TRENDS
+            </h3>
+            <span class="material-symbols-outlined text-sm text-gray-400 group-hover:text-atlas-red">touch_app</span>
+          </div>
+          <p class="text-xs text-atlas-muted font-medium mb-4">
+            week-over-week / same-day-last-month comparison
+          </p>
+          <div class="p-3 bg-gray-50 rounded-lg text-xs space-y-2 border border-gray-200">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Same Day Last Week:</span>
+              <span class="font-bold text-atlas-text">74% Congestion</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Historical Peak:</span>
+              <span class="font-bold text-atlas-orange">05:30 PM (+18m)</span>
+            </div>
+          </div>
+          <p class="text-[11px] text-atlas-red font-semibold mt-3 flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">tune</span> Click to layer history on graph
+          </p>
+        </div>
+
+        <!-- 2. WEATHER OVERLAY -->
+        <div onclick="toggleOverlay('weather')"
+          class="group bg-white rounded-xl border border-gray-300 p-6 shadow-sm hover:border-atlas-orange transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <h3
+              class="font-bold text-xs uppercase tracking-wider text-atlas-text group-hover:text-atlas-orange transition-colors flex items-center gap-2">
+              <span class="material-symbols-outlined text-atlas-orange">cloud</span> WEATHER OVERLAY
+            </h3>
+            <span class="material-symbols-outlined text-sm text-gray-400 group-hover:text-atlas-orange">touch_app</span>
+          </div>
+          <p class="text-xs text-atlas-muted font-medium mb-4">
+            current + forecast conditions layered on congestion
+          </p>
+          <div class="p-3 bg-amber-50/60 rounded-lg text-xs space-y-2 border border-amber-200">
+            <div class="flex justify-between items-center">
+              <span class="text-amber-900 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">thunderstorm</span> Moderate Rain Forecast
+              </span>
+              <span class="text-amber-800 font-bold">+15 min delay</span>
+            </div>
+            <p class="text-[11px] text-amber-800">Expected start: 05:15 PM in Central Zone</p>
+          </div>
+          <p class="text-[11px] text-atlas-orange font-semibold mt-3 flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">tune</span> Click to layer weather impact line
+          </p>
+        </div>
+
+        <!-- 3. EVENT IMPACT -->
+        <div onclick="toggleOverlay('event')"
+          class="group bg-white rounded-xl border border-gray-300 p-6 shadow-sm hover:border-atlas-teal transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <h3
+              class="font-bold text-xs uppercase tracking-wider text-atlas-text group-hover:text-atlas-teal transition-colors flex items-center gap-2">
+              <span class="material-symbols-outlined text-atlas-teal">event</span> EVENT IMPACT
+            </h3>
+            <span class="material-symbols-outlined text-sm text-gray-400 group-hover:text-atlas-teal">touch_app</span>
+          </div>
+          <p class="text-xs text-atlas-muted font-medium mb-4">
+            upcoming events near each zone + expected impact
+          </p>
+          <div class="p-3 bg-teal-50/60 rounded-lg text-xs space-y-2 border border-teal-200">
+            <div class="flex justify-between items-center">
+              <span class="text-teal-950 font-semibold">Stadium Sports Event</span>
+              <span class="text-atlas-red font-bold">+35% Surge</span>
+            </div>
+            <p class="text-[11px] text-teal-800">Attendance: ~25,000 • Dispersal at 06:00 PM</p>
+          </div>
+          <p class="text-[11px] text-atlas-teal font-semibold mt-3 flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">tune</span> Click to layer event surge impact
+          </p>
+        </div>
+
+      </div>
+
+      <div class="bg-amber-50/80 border border-amber-300 rounded-xl p-5 text-xs text-amber-950">
+        <h4 class="font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-amber-700">sticky_note_2</span> NOTES
+        </h4>
+        <ul class="space-y-1 list-disc list-inside text-amber-900">
+          <li>All three lower panels feed the same forecast graph above; selecting an event or a weather condition
+            highlights its effect on the forecast line.</li>
+          <li>This is the source data for the Prediction Engine box in the architecture diagram.</li>
+        </ul>
+      </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-3 px-8 text-xs text-gray-500 flex justify-between items-center">
+      <span>ATLAS</span>
+    </footer>
+
+  </div>
+
+  <script>
+    function toggleOverlay(type) {
+      const overlayPath = document.getElementById('overlayPath');
+      const activeTag = document.getElementById('activeOverlayTag');
+
+      if (overlayPath.getAttribute('opacity') === '1') {
+        overlayPath.setAttribute('opacity', '0.2');
+        activeTag.classList.add('hidden');
+      } else {
+        overlayPath.setAttribute('opacity', '1');
+        activeTag.classList.remove('hidden');
+        activeTag.textContent = 'Active Layer: ' + type.toUpperCase();
+      }
+    }
+
+    // Fetch API Deliverable predictions from Express Backend and update DOM
+    async function loadApiPredictions() {
+      try {
+        const response = await fetch('http://localhost:5000/api/predictions');
+        if (response.ok) {
+          const predictions = await response.json();
+          console.log('[ATLAS Prediction API Feed Loaded]:', predictions);
+
+          // Populate Zone Selector dynamically
+          const zoneSelect = document.getElementById('zoneSelect');
+          if (zoneSelect && predictions.length > 0) {
+            zoneSelect.innerHTML = predictions.map(p =>
+              `<option value="${p.segmentId}">${p.segmentName} (${p.zone}) - ${p.alertLevel}</option>`
+            ).join('');
+
+            // Add live indicator badge
+            const header = document.querySelector('header');
+            if (header && !document.getElementById('apiConnectedBadge')) {
+              const badge = document.createElement('span');
+              badge.id = 'apiConnectedBadge';
+              badge.className = 'text-xs bg-emerald-900/80 text-emerald-300 border border-emerald-600 px-2.5 py-1 rounded font-semibold flex items-center gap-1.5';
+              badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> API Connected';
+              header.appendChild(badge);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('[ATLAS Prediction API Offline]: Running with local simulated feed');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadApiPredictions);
+  </script>
+
+</body>
+
+</html>

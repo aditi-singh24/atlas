@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'atlas-bg': '#F9F9F9',
+            'atlas-dark': '#2F3131',
+            'atlas-text': '#1A1C1C',
+            'atlas-muted': '#566062',
+            'atlas-red': '#B0323A',
+            'atlas-orange': '#D97746',
+            'atlas-green': '#10B981',
+            'atlas-teal': '#8AA8AB',
+            'atlas-card': '#FFFFFF',
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-atlas-bg text-atlas-text font-sans antialiased min-h-screen flex">
+
+  <!-- Sidebar Component -->
+  <aside class="w-64 bg-atlas-dark text-white flex flex-col fixed inset-y-0 left-0 z-30 shadow-lg">
+    <!-- Brand logo -->
+    <a href="landing_page.html" class="p-6 border-b border-gray-700 flex items-center space-x-3">
+      <img src="logo.png" alt="ATLAS Logo" class="h-9 w-9 rounded-full aspect-square object-cover">
+      <div>
+        <h1 class="font-display font-bold text-xl tracking-wide leading-none text-white">ATLAS</h1>
+        <p class="text-[9px] text-gray-400 mt-1 leading-tight max-w-[150px]">AI Traffic Logistics &amp; Adaptive System
+        </p>
+      </div>
+    </a>
+
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+      <a href="dashboard.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="prediction.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">online_prediction</span>
+        <span>Prediction</span>
+      </a>
+      <a href="green_corridor_management.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">emergency</span>
+        <span>Green Corridor</span>
+      </a>
+      <a href="traffic_control.html"
+        class="flex items-center space-x-3 px-4 py-3 bg-atlas-red text-white rounded-lg font-medium text-sm">
+        <span class="material-symbols-outlined text-xl">traffic</span>
+        <span>Alerts & Traffic Control</span>
+      </a>
+      <a href="variables_settings.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">settings</span>
+        <span>Variables / Settings</span>
+      </a>
+      <a href="architecture.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">schema</span>
+        <span>System Architecture</span>
+      </a>
+      <a href="public_dashboard.html"
+        class="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-xl">public</span>
+        <span>Public View</span>
+      </a>
+    </nav>
+
+    <div class="p-4 border-t border-gray-700">
+      <div class="bg-gray-800/80 p-3 rounded-lg flex items-center space-x-3">
+        <span class="w-3 h-3 rounded-full bg-atlas-orange animate-pulse"></span>
+        <div>
+          <p class="text-xs font-semibold text-white">Core TMS Decision Layer</p>
+          <p class="text-[10px] text-gray-400">Auto-apply + Admin Override</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="ml-64 flex-1 flex flex-col min-h-screen">
+
+    <!-- Main Content Body -->
+    <main class="p-8 flex-1 flex flex-col gap-6 max-w-[1600px] w-full mx-auto">
+
+      <!-- Page Title & Filters Bar -->
+      <div
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 rounded-xl border border-gray-300 shadow-sm gap-4">
+        <div class="flex items-center space-x-4">
+          <h1 class="font-display font-bold text-lg tracking-wide uppercase text-atlas-red flex items-center gap-2">
+            <span class="material-symbols-outlined">warning</span> CONGESTION ALERTS
+          </h1>
+          <div class="h-4 w-px bg-gray-300"></div>
+          <!-- Zone Filter -->
+          <div class="flex items-center space-x-2 text-xs bg-gray-50 px-3 py-1.5 rounded border border-gray-300">
+            <span class="text-atlas-muted font-medium">Filter Zone:</span>
+            <select id="zoneFilter"
+              class="bg-transparent text-atlas-text font-semibold focus:outline-none cursor-pointer text-xs">
+              <option value="all">All Zones</option>
+              <option value="central">Central Zone</option>
+              <option value="north">North Junction</option>
+              <option value="east">East Commercial</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Severity Filter Buttons -->
+        <div class="flex items-center space-x-2">
+          <span class="text-xs text-atlas-muted font-medium mr-1">Severity:</span>
+          <button onclick="filterSeverity('LOW')"
+            class="sev-btn px-3 py-1 bg-emerald-700 text-white text-xs font-bold rounded shadow-sm hover:opacity-90">LOW</button>
+          <button onclick="filterSeverity('MEDIUM')"
+            class="sev-btn px-3 py-1 bg-amber-600 text-white text-xs font-bold rounded shadow-sm hover:opacity-90">MEDIUM</button>
+          <button onclick="filterSeverity('HIGH')"
+            class="sev-btn px-3 py-1 bg-atlas-orange text-white text-xs font-bold rounded shadow-sm hover:opacity-90">HIGH</button>
+          <button onclick="filterSeverity('CRITICAL')"
+            class="sev-btn px-3 py-1 bg-atlas-red text-white text-xs font-bold rounded shadow-sm hover:opacity-90">CRITICAL</button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h2 class="font-bold text-sm uppercase tracking-wider text-atlas-text flex items-center gap-2">
+              <span class="material-symbols-outlined text-atlas-red">pin_drop</span> ALERT LIST + MAP PINS
+            </h2>
+            <p class="text-xs text-atlas-muted">(zone, level, cause: prediction / corridor, time raised, status)</p>
+          </div>
+          <span class="text-xs font-semibold text-atlas-red bg-red-50 px-3 py-1 rounded">Feeds directly from Core TMS
+            Layer</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-atlas-text">
+            <thead class="bg-gray-100 uppercase text-[10px] text-atlas-muted border-b border-gray-300 font-bold">
+              <tr>
+                <th class="py-3 px-4">Zone / Junction</th>
+                <th class="py-3 px-4">Level</th>
+                <th class="py-3 px-4">Cause</th>
+                <th class="py-3 px-4">Time Raised</th>
+                <th class="py-3 px-4">Auto-Applied Action</th>
+                <th class="py-3 px-4">Status</th>
+                <th class="py-3 px-4">Admin Override</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200" id="alertTableBody">
+              <tr class="hover:bg-red-50/40">
+                <td class="py-3 px-4 font-bold text-atlas-text flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-atlas-red"></span> Central Ave & 5th St
+                </td>
+                <td class="py-3 px-4"><span
+                    class="px-2 py-0.5 bg-atlas-red text-white rounded font-bold text-[10px]">CRITICAL</span></td>
+                <td class="py-3 px-4 font-medium text-atlas-orange">Prediction (Sports Event)</td>
+                <td class="py-3 px-4 font-mono text-gray-600">04:38 PM (+12m ago)</td>
+                <td class="py-3 px-4 font-medium">Extend East-West Green Light +45s</td>
+                <td class="py-3 px-4"><span
+                    class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">AUTO-APPLIED</span>
+                </td>
+                <td class="py-3 px-4">
+                  <button onclick="alert('Manual Override triggered for Central Ave!')"
+                    class="px-2.5 py-1 bg-atlas-dark text-white rounded hover:bg-gray-800 text-[10px] font-bold">Override</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-amber-50/40">
+                <td class="py-3 px-4 font-bold text-atlas-text flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> North Expressway J-4
+                </td>
+                <td class="py-3 px-4"><span
+                    class="px-2 py-0.5 bg-emerald-600 text-white rounded font-bold text-[10px]">HIGH</span></td>
+                <td class="py-3 px-4 font-medium text-emerald-700">Corridor Run (AMB-902)</td>
+                <td class="py-3 px-4 font-mono text-gray-600">04:41 PM (+9m ago)</td>
+                <td class="py-3 px-4 font-medium">Signal Preemption (Hold All Red)</td>
+                <td class="py-3 px-4"><span
+                    class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">AUTO-APPLIED</span>
+                </td>
+                <td class="py-3 px-4">
+                  <button onclick="alert('Signal released by Admin')"
+                    class="px-2.5 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-[10px] font-bold">Release</button>
+                </td>
+              </tr>
+              <tr class="hover:bg-amber-50/40">
+                <td class="py-3 px-4 font-bold text-atlas-text flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> East Commercial Blvd
+                </td>
+                <td class="py-3 px-4"><span
+                    class="px-2 py-0.5 bg-amber-600 text-white rounded font-bold text-[10px]">MEDIUM</span></td>
+                <td class="py-3 px-4 font-medium text-amber-800">Weather (Moderate Rain)</td>
+                <td class="py-3 px-4 font-mono text-gray-600">04:20 PM (+30m ago)</td>
+                <td class="py-3 px-4 font-medium">Reroute Suggestion Queued</td>
+                <td class="py-3 px-4"><span
+                    class="px-2 py-0.5 bg-amber-100 text-amber-900 rounded font-bold text-[10px]">QUEUED</span></td>
+                <td class="py-3 px-4">
+                  <button onclick="alert('Reroute approved')"
+                    class="px-2 py-0.5 bg-emerald-600 text-white rounded font-bold text-[10px] mr-1">Approve</button>
+                  <button onclick="alert('Reroute rejected')"
+                    class="px-2 py-0.5 bg-atlas-red text-white rounded font-bold text-[10px]">Reject</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm flex flex-col">
+        <div class="border-b border-gray-200 pb-3 mb-4 flex justify-between items-center">
+          <div>
+            <h2 class="font-bold text-sm uppercase tracking-wider text-atlas-text flex items-center gap-2">
+              <span class="material-symbols-outlined text-atlas-orange">tune</span> TRAFFIC CONTROL — JUNCTION VIEW
+            </h2>
+            <p class="text-xs text-atlas-muted">Signal timing per junction | AI suggestion vs current state | Manual
+              override toggle | Approve / Reject queued reroutes</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-xs font-semibold text-atlas-text">Manual Override:</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="overrideToggle" class="sr-only peer" onchange="toggleManualOverride(this)">
+              <div
+                class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-atlas-red">
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Junction Grid Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- Junction 1 Card -->
+          <div class="p-4 bg-gray-50 border border-gray-300 rounded-lg space-y-3">
+            <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+              <h4 class="font-bold text-xs text-atlas-text uppercase">Junction 104 — Central & 5th</h4>
+              <span class="text-[10px] px-2 py-0.5 bg-red-100 text-atlas-red font-bold rounded">AI Auto-Apply
+                Active</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-2.5 bg-white border border-gray-200 rounded">
+                <p class="text-gray-500 text-[11px] mb-1 font-medium">Current Signal State</p>
+                <p class="font-bold text-atlas-text">North-South: Green (60s)</p>
+                <p class="text-gray-500 text-[10px]">East-West: Red (45s)</p>
+              </div>
+
+              <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded">
+                <p class="text-emerald-800 text-[11px] mb-1 font-semibold">AI Suggested Timing</p>
+                <p class="font-bold text-emerald-950">North-South: Green (30s)</p>
+                <p class="text-emerald-800 text-[10px] font-medium">East-West: Green (75s)</p>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+              <span class="text-xs text-atlas-muted">Reroute Queue: 1 Pending</span>
+              <div class="space-x-2">
+                <button onclick="alert('Queued Reroute Approved for Junction 104')"
+                  class="px-3 py-1 bg-emerald-600 text-white rounded font-bold text-xs hover:bg-emerald-700">Approve</button>
+                <button onclick="alert('Queued Reroute Rejected')"
+                  class="px-3 py-1 bg-atlas-red text-white rounded font-bold text-xs hover:bg-atlas-red-hover">Reject</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Junction 2 Card -->
+          <div class="p-4 bg-gray-50 border border-gray-300 rounded-lg space-y-3">
+            <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+              <h4 class="font-bold text-xs text-atlas-text uppercase">Junction 202 — North Expressway</h4>
+              <span class="text-[10px] px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded">Green Corridor
+                Preempt</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-2.5 bg-white border border-gray-200 rounded">
+                <p class="text-gray-500 text-[11px] mb-1 font-medium">Current Signal State</p>
+                <p class="font-bold text-emerald-700">Emergency Corridor: GREEN</p>
+                <p class="text-gray-500 text-[10px]">Cross Traffic: All Red (HOLD)</p>
+              </div>
+
+              <div class="p-2.5 bg-blue-50 border border-blue-300 rounded">
+                <p class="text-blue-900 text-[11px] mb-1 font-semibold">Post-Pass Normalization</p>
+                <p class="font-bold text-blue-950">Auto-restore in 2m 14s</p>
+                <p class="text-blue-800 text-[10px]">Queue clearing phase</p>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+              <span class="text-xs text-atlas-muted">Ambulance Distance: 400m</span>
+              <button onclick="alert('Corridor Preemption Override Triggered')"
+                class="px-3 py-1 bg-atlas-dark text-white rounded font-bold text-xs hover:bg-gray-800">Admin
+                Override</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="bg-amber-50/80 border border-amber-300 rounded-xl p-5 text-xs text-amber-950">
+        <h4 class="font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-amber-700">sticky_note_2</span> NOTES
+        </h4>
+        <ul class="space-y-1 list-disc list-inside text-amber-900">
+          <li>Alerts list feeds directly from the Core TMS Decision Layer.</li>
+          <li>Traffic Control view is where auto-applied changes are visible for admin override, per the "auto-apply,
+            admin can override after" rule.</li>
+        </ul>
+      </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-3 px-8 text-xs text-gray-500 flex justify-between items-center">
+      <span>ATLAS</span>
+    </footer>
+
+  </div>
+
+  <script>
+    function filterSeverity(level) {
+      alert('Filtering alerts by severity: ' + level);
+    }
+    function toggleManualOverride(checkbox) {
+      if (checkbox.checked) {
+        alert('Manual Override Mode ENABLED. Core TMS Auto-apply is suspended.');
+      } else {
+        alert('Manual Override Mode DISABLED. Core TMS Auto-apply restored.');
+      }
+    }
+
+    // Connect to GET /api/predictions and populate Alert Table dynamically
+    async function loadTrafficControlApiData() {
+      try {
+        const response = await fetch('http://localhost:5000/api/predictions');
+        if (response.ok) {
+          const predictions = await response.json();
+          console.log('[ATLAS Traffic Control API Feed Loaded]:', predictions);
+
+          const tableBody = document.getElementById('alertTableBody');
+          if (tableBody && predictions.length > 0) {
+            tableBody.innerHTML = predictions.map(p => {
+              const causeText = p.activeEvents.length > 0 ? `Event (${p.activeEvents[0]})` : `Weather (${p.weatherCondition})`;
+              const badgeClass = p.alertLevel === 'SEVERE' ? 'bg-atlas-red text-white' :
+                p.alertLevel === 'HIGH' ? 'bg-atlas-orange text-white' :
+                  p.alertLevel === 'MEDIUM' ? 'bg-amber-600 text-white' : 'bg-emerald-600 text-white';
+
+              return `
+                <tr class="hover:bg-gray-50 font-sans">
+                  <td class="py-3 px-4 font-bold text-atlas-text flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full ${p.alertLevel === 'SEVERE' ? 'bg-atlas-red' : 'bg-atlas-orange'}"></span>
+                    ${p.segmentName} (${p.zone})
+                  </td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 ${badgeClass} rounded font-bold text-[10px]">${p.alertLevel}</span></td>
+                  <td class="py-3 px-4 font-medium text-atlas-muted">${causeText}</td>
+                  <td class="py-3 px-4 font-mono text-gray-600">${new Date(p.timestamp).toLocaleTimeString()}</td>
+                  <td class="py-3 px-4 font-medium">Auto-apply Signal Adjustment (${p.predictedCongestion}%)</td>
+                  <td class="py-3 px-4"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">AUTO-APPLIED</span></td>
+                  <td class="py-3 px-4">
+                    <button onclick="alert('Manual Override triggered for ${p.segmentId}')" class="px-2.5 py-1 bg-atlas-dark text-white rounded hover:bg-gray-800 text-[10px] font-bold">Override</button>
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+      } catch (err) {
+        console.warn('[ATLAS Traffic Control API Offline]: Using default simulated state');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadTrafficControlApiData);
+  </script>
+
+</body>
+
+</html>

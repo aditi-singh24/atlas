@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'atlas-bg': '#F9F6F0',
+            'atlas-dark': '#2F3131',
+            'atlas-text': '#2D3748',
+            'atlas-red': '#B0323A',
+            'atlas-red-hover': '#902830',
+            'atlas-orange': '#D97746',
+            'atlas-orange-light': '#F6E4DA',
+            'atlas-green': '#10B981',
+            'atlas-teal': '#8AA8AB',
+            'atlas-gray': '#64748B',
+            'atlas-card': '#FFFFFF',
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #F9F6F0;
+      color: #2D3748;
+    }
+
+    .shadow-card {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .hero-bg-accent {
+      background-image: linear-gradient(rgba(249, 246, 240, 0.78), rgba(249, 246, 240, 0.9)), url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=2400&q=85');
+      background-position: center;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased flex flex-col min-h-screen">
+
+  <!-- BEGIN: Navigation -->
+  <nav class="container mx-auto px-6 py-6 flex items-center justify-between" data-purpose="main-navigation">
+    <!-- Official Logo -->
+    <a href="landing_page.html" class="flex items-center space-x-3">
+      <img src="logo.png" alt="ATLAS Logo" class="h-9 w-9 rounded-full aspect-square object-cover">
+      <div>
+        <span
+          class="font-display font-bold text-2xl tracking-wide uppercase text-atlas-text leading-none block">ATLAS</span>
+        <span class="text-xs text-atlas-orange font-medium leading-tight">AI Traffic Logistics &amp; Adaptive
+          System</span>
+      </div>
+    </a>
+
+    <!-- Nav Links -->
+    <div class="hidden md:flex space-x-8 text-sm font-medium text-atlas-gray">
+      <a class="text-atlas-red font-semibold hover:text-atlas-red-hover transition-colors"
+        href="landing_page.html">Home</a>
+      <a class="hover:text-atlas-text transition-colors" href="architecture.html">Architecture</a>
+      <a class="hover:text-atlas-text transition-colors" href="public_dashboard.html">Public View</a>
+    </div>
+
+    <div class="hidden md:flex items-center">
+      <a class="text-sm font-medium px-4 py-2 border border-atlas-red rounded-md bg-atlas-red hover:bg-atlas-red-hover text-white transition-colors"
+        href="authentication.html">Login</a>
+    </div>
+  </nav>
+  <!-- END: Navigation -->
+
+  <main class="flex-grow hero-bg-accent">
+    <!-- BEGIN: Hero Section -->
+    <section class="container mx-auto px-6 py-12 lg:py-20 flex flex-col items-center text-center max-w-4xl"
+      data-purpose="hero-section">
+
+      <!-- System Title -->
+      <h1 class="font-display text-5xl lg:text-7xl font-extrabold tracking-tight text-atlas-text mb-3">
+        ATLAS
+      </h1>
+
+      <!-- Subtitle -->
+      <h2 class="text-2xl lg:text-3xl font-semibold text-atlas-text mb-8">
+        AI Traffic Logistics &amp; Adaptive System
+      </h2>
+
+      <!-- Divider -->
+      <div class="w-48 h-0.5 bg-gradient-to-r from-transparent via-atlas-red to-transparent mb-8"></div>
+
+      <!-- Core Description -->
+      <p class="text-lg lg:text-xl text-atlas-gray max-w-2xl leading-relaxed mb-12">
+        AI-based traffic management system combining predictive congestion forecasting with a real-time green corridor
+        for emergency vehicles, unified under one traffic control decision layer.
+      </p>
+
+      <!-- Module Cards -->
+      <div class="grid md:grid-cols-2 gap-6 w-full max-w-3xl mb-12">
+        <!-- Prediction Module Button -->
+        <a href="prediction.html"
+          class="group bg-white p-8 rounded-2xl shadow-card border-2 border-atlas-red/20 hover:border-atlas-red transition-all duration-300 flex flex-col items-center text-center hover:-translate-y-1">
+          <div
+            class="w-14 h-14 rounded-xl bg-red-50 text-atlas-red flex items-center justify-center mb-4 group-hover:bg-atlas-red group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-3xl">online_prediction</span>
+          </div>
+          <h3 class="font-bold text-xl text-atlas-text mb-2 tracking-wide uppercase">PREDICTION</h3>
+          <p class="text-xs text-atlas-gray font-medium tracking-wider uppercase bg-gray-100 px-3 py-1 rounded-full">
+            traffic + history + weather + event
+          </p>
+          <span class="mt-4 text-xs font-semibold text-atlas-red flex items-center gap-1 group-hover:underline">
+            Open Prediction Engine <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </span>
+        </a>
+
+        <!-- Green Corridor Module Button -->
+        <a href="green_corridor_management.html"
+          class="group bg-white p-8 rounded-2xl shadow-card border-2 border-emerald-500/20 hover:border-emerald-600 transition-all duration-300 flex flex-col items-center text-center hover:-translate-y-1">
+          <div
+            class="w-14 h-14 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-3xl">emergency</span>
+          </div>
+          <h3 class="font-bold text-xl text-atlas-text mb-2 tracking-wide uppercase">GREEN CORRIDOR</h3>
+          <p class="text-xs text-atlas-gray font-medium tracking-wider uppercase bg-gray-100 px-3 py-1 rounded-full">
+            ambulance intimation + adaptive signals
+          </p>
+          <span class="mt-4 text-xs font-semibold text-emerald-700 flex items-center gap-1 group-hover:underline">
+            Open Green Corridor <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </span>
+        </a>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-atlas-dark text-gray-300 py-6 px-6 text-center text-sm border-t border-gray-700">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-2 font-display font-semibold text-white">
+        <img src="logo.png" alt="ATLAS Logo" class="h-5 w-5 rounded-full aspect-square object-cover">
+        <span>ATLAS</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
