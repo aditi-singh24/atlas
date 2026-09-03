@@ -13,6 +13,9 @@
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet">
+  <!-- Leaflet Map Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -124,7 +127,7 @@
   <!-- Main Content Wrapper -->
   <div class="ml-64 flex-1 flex flex-col min-h-screen">
 
-    <header class="h-16 bg-atlas-dark text-white px-8 flex justify-between items-center sticky top-0 z-20 shadow-md">
+    <header class="h-16 bg-atlas-dark text-white px-8 flex justify-between items-center sticky top-0 z-50 shadow-md">
       <div class="flex items-center space-x-6">
         <span class="font-display font-bold text-lg tracking-wide uppercase text-atlas-red">ATLAS ADMIN</span>
         <div class="h-4 w-px bg-gray-600"></div>
@@ -206,49 +209,17 @@
               <h2 class="font-bold text-sm uppercase tracking-wider text-atlas-text flex items-center gap-2">
                 <span class="material-symbols-outlined text-atlas-red">map</span> LIVE CITY MAP
               </h2>
-              <p class="text-xs text-atlas-muted">(congestion heatmap by zone, active green corridors pinned)</p>
+              <p class="text-xs text-atlas-muted">(real-time traffic congestion from TomTom API)</p>
             </div>
             <span
               class="text-xs px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded font-semibold flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span> 2 Active Corridors
+              <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span> Live Sync
             </span>
           </div>
 
-          <!-- Heatmap Canvas Simulation -->
-          <div
-            class="flex-1 bg-slate-900 rounded-lg relative overflow-hidden flex items-center justify-center border border-gray-300">
-            <!-- Simulated Map Canvas Background -->
-            <div
-              class="absolute inset-0 opacity-40 bg-[radial-gradient(#8AA8AB_1px,transparent_1px)] [background-size:16px_16px]">
-            </div>
-
-            <!-- Congestion Heatmap Overlays -->
-            <div class="absolute top-1/4 left-1/3 w-32 h-32 bg-red-600/30 rounded-full blur-xl"></div>
-            <div class="absolute bottom-1/3 right-1/4 w-40 h-40 bg-amber-500/30 rounded-full blur-2xl"></div>
-
-            <!-- Green Corridor Polyline Pin -->
-            <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-              <path d="M 120 280 Q 300 180 600 120" stroke="#10B981" stroke-width="4" fill="none" stroke-dasharray="6 4"
-                class="animate-pulse"></path>
-            </svg>
-
-            <!-- Ambulance Marker Pin -->
-            <div
-              class="absolute top-[120px] right-[250px] bg-emerald-600 text-white text-xs px-3 py-1 rounded-full shadow-lg flex items-center gap-1 font-bold z-10 border border-white">
-              <span class="material-symbols-outlined text-sm">emergency</span> AMB-902 (ETA 4m)
-            </div>
-
-            <!-- Congestion Hotspot Marker -->
-            <div
-              class="absolute top-[160px] left-[220px] bg-atlas-red text-white text-[11px] px-2.5 py-1 rounded shadow flex items-center gap-1 font-bold">
-              <span class="material-symbols-outlined text-xs">warning</span> Central Junction (Critical)
-            </div>
-
-            <div
-              class="absolute bottom-3 right-3 bg-atlas-dark/90 text-white text-[11px] px-3 py-1.5 rounded backdrop-blur">
-              Real-time feed: Central State DB
-            </div>
-          </div>
+          <!-- Live Traffic Map -->
+          <div id="map" class="relative z-0 isolate flex-1 rounded-lg border border-gray-300"
+            style="min-height: 350px;"></div>
         </div>
 
         <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm flex flex-col justify-between">
@@ -304,8 +275,8 @@
       <div class="bg-amber-50 rounded-xl border border-amber-300 p-4 shadow-sm">
         <div class="flex items-center justify-between mb-2">
           <h3 class="font-bold text-xs uppercase tracking-wider text-amber-900 flex items-center gap-2">
-            <span class="material-symbols-outlined text-amber-700">warning</span> TOP ALERTS STRIP — scrolling list of
-            highest-severity congestion + corridor alerts
+            <span class="material-symbols-outlined text-amber-700">warning</span> TOP ALERTS STRIP — highest-severity
+            congestion alerts
           </h3>
           <a href="traffic_control.html"
             class="text-xs font-semibold text-amber-900 hover:underline flex items-center gap-1">
@@ -338,9 +309,9 @@
           <span class="material-symbols-outlined text-sm text-amber-700">sticky_note_2</span> NOTES
         </h4>
         <ul class="space-y-1 list-disc list-inside text-amber-900">
-          <li>Nav row links out to each of the pages on the following slides.</li>
-          <li>Quick Stats + heatmap refresh in real time from Central State/DB.</li>
-          <li>Alerts strip is clickable, jumps straight to the Alerts page filtered to that zone.</li>
+          <li>Nav row links out to each of the pages in the sidebar.</li>
+          <li>Live map refreshes every 30 seconds with real TomTom traffic data.</li>
+          <li>Alerts strip updates dynamically from backend predictions.</li>
         </ul>
       </div>
 
@@ -353,6 +324,84 @@
   </div>
 
   <script>
+    async function initializeMap() {
+      // Initialize map centered on Bangalore
+      const map = L.map('map').setView([12.9716, 77.5946], 11);
+
+      // Add OpenStreetMap tiles (free, no API key needed)
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      // Traffic segments (5 Bangalore junctions)
+      const segments = [
+        { name: "Silk Board Junction", lat: 12.9352, lng: 77.6245, id: "SEG-101" },
+        { name: "Marathahalli Bridge", lat: 12.9698, lng: 77.7499, id: "SEG-102" },
+        { name: "Hebbal Junction", lat: 13.0109, lng: 77.5904, id: "SEG-103" },
+        { name: "KR Puram Junction", lat: 13.0277, lng: 77.6408, id: "SEG-104" },
+        { name: "Whitefield Junction", lat: 12.9698, lng: 77.7480, id: "SEG-105" }
+      ];
+
+      async function loadTrafficData() {
+        try {
+          const response = await fetch('http://localhost:5000/api/predictions');
+          const predictions = await response.json();
+
+          // Clear existing markers before loading new data
+          map.eachLayer(layer => {
+            if (layer instanceof L.CircleMarker) {
+              map.removeLayer(layer);
+            }
+          });
+
+          predictions.forEach(pred => {
+            const segment = segments.find(s => s.id === pred.segmentId);
+            if (segment) {
+              // Color based on congestion level
+              let color = '#10B981'; // green (low)
+              if (pred.predictedCongestion >= 85) color = '#B0323A'; // red (severe)
+              else if (pred.predictedCongestion >= 65) color = '#D97746'; // orange (high)
+              else if (pred.predictedCongestion >= 40) color = '#FCD34D'; // yellow (medium)
+
+              const marker = L.circleMarker([segment.lat, segment.lng], {
+                radius: 15,
+                fillColor: color,
+                color: '#000',
+                weight: 2,
+                opacity: 0.8,
+                fillOpacity: 0.7
+              }).addTo(map);
+
+              const popupText = `
+                <div style="font-size: 12px; font-weight: bold;">
+                  <b>${segment.name}</b><br>
+                  Congestion: ${pred.predictedCongestion}%<br>
+                  Alert: ${pred.alertLevel}<br>
+                  Weather: ${pred.weatherCondition}
+                </div>
+              `;
+              marker.bindPopup(popupText);
+            }
+          });
+
+          console.log('✓ Traffic map updated with live data');
+        } catch (err) {
+          console.warn('⚠️ Map offline - using fallback positions', err);
+        }
+      }
+
+      // Load data when page opens
+      loadTrafficData();
+
+      // Refresh every 30 seconds
+      setInterval(loadTrafficData, 30000);
+    }
+
+    // Initialize map when DOM is ready
+    document.addEventListener('DOMContentLoaded', initializeMap);
+
+    // Dashboard API data loading
     async function loadDashboardApiData() {
       try {
         const response = await fetch('http://localhost:5000/api/predictions');

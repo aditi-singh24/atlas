@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS Traffic Map</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <style>
+    body { margin: 0; padding: 0; font-family: Poppins, sans-serif; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    .info-box { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .marker-popup { font-size: 12px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script>
+    // Initialize map centered on Bangalore
+    const map = L.map('map').setView([12.9716, 77.5946], 11);
+
+    // Add OpenStreetMap tiles (free)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Traffic segments (5 Bangalore junctions)
+    const segments = [
+      { name: "Silk Board Junction", lat: 12.9352, lng: 77.6245, id: "SEG-101" },
+      { name: "Marathahalli Bridge", lat: 12.9698, lng: 77.7499, id: "SEG-102" },
+      { name: "Hebbal Junction", lat: 13.0109, lng: 77.5904, id: "SEG-103" },
+      { name: "KR Puram Junction", lat: 13.0277, lng: 77.6408, id: "SEG-104" },
+      { name: "Whitefield Junction", lat: 12.9698, lng: 77.7480, id: "SEG-105" }
+    ];
+
+    // Fetch predictions from backend and display on map
+    async function loadTrafficData() {
+      try {
+        const response = await fetch('http://localhost:5000/api/predictions');
+        const predictions = await response.json();
+
+        predictions.forEach(pred => {
+          const segment = segments.find(s => s.id === pred.segmentId);
+          if (segment) {
+            // Color based on congestion level
+            let color = '#10B981'; // green (low)
+            if (pred.predictedCongestion >= 85) color = '#B0323A'; // red (severe)
+            else if (pred.predictedCongestion >= 65) color = '#D97746'; // orange (high)
+            else if (pred.predictedCongestion >= 40) color = '#FCD34D'; // yellow (medium)
+
+            // Create marker
+            const marker = L.circleMarker([segment.lat, segment.lng], {
+              radius: 15,
+              fillColor: color,
+              color: '#000',
+              weight: 2,
+              opacity: 0.8,
+              fillOpacity: 0.7
+            }).addTo(map);
+
+            // Popup with traffic info
+            const popupText = `
+              <div class="marker-popup">
+                <b>${segment.name}</b><br>
+                Congestion: ${pred.predictedCongestion}%<br>
+                Alert: ${pred.alertLevel}<br>
+                Speed: ${pred.factors.liveScore * 100}%
+              </div>
+            `;
+            marker.bindPopup(popupText);
+          }
+        });
+
+        console.log('✓ Traffic map loaded with live data');
+      } catch (err) {
+        console.warn('⚠️ Map offline - using fallback positions', err);
+      }
+    }
+
+    // Load data when page opens
+    loadTrafficData();
+
+    // Refresh every 30 seconds
+    setInterval(loadTrafficData, 30000);
+  </script>
+</body>
+</html>

@@ -1,14 +1,20 @@
 /**
  * Historical Traffic Data Ingestion Module
  * Provides baseline congestion patterns based on day-of-week and time-of-day history.
+ *
+ * Kept simulated intentionally — there is no public dataset for per-junction
+ * historical congestion in Bangalore. Baselines below are set from each
+ * junction's well-documented real-world reputation (Silk Board is
+ * consistently ranked the worst bottleneck in the city, etc.), not
+ * randomly picked.
  */
 
 const historicalBaselines = {
-  "SEG-101": { historicalAvgDensity: 75, sameDayLastWeekDensity: 74, peakHourRisk: 0.85 },
-  "SEG-102": { historicalAvgDensity: 40, sameDayLastWeekDensity: 38, peakHourRisk: 0.42 },
-  "SEG-103": { historicalAvgDensity: 58, sameDayLastWeekDensity: 60, peakHourRisk: 0.65 },
-  "SEG-104": { historicalAvgDensity: 30, sameDayLastWeekDensity: 28, peakHourRisk: 0.32 },
-  "SEG-105": { historicalAvgDensity: 82, sameDayLastWeekDensity: 80, peakHourRisk: 0.88 }
+  "SEG-101": { historicalAvgDensity: 88, sameDayLastWeekDensity: 86, peakHourRisk: 0.92 }, // Silk Board Junction
+  "SEG-102": { historicalAvgDensity: 76, sameDayLastWeekDensity: 74, peakHourRisk: 0.80 }, // Marathahalli Bridge
+  "SEG-103": { historicalAvgDensity: 65, sameDayLastWeekDensity: 63, peakHourRisk: 0.70 }, // Hebbal Flyover
+  "SEG-104": { historicalAvgDensity: 78, sameDayLastWeekDensity: 77, peakHourRisk: 0.82 }, // KR Puram Junction
+  "SEG-105": { historicalAvgDensity: 80, sameDayLastWeekDensity: 79, peakHourRisk: 0.85 }  // Tin Factory Junction
 };
 
 /**

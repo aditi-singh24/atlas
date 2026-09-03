@@ -21,43 +21,50 @@ function getAlertLevel(score) {
 /**
  * Generates PredictionOutput objects for all monitored road segments
  */
-function generatePredictions() {
-  const liveTraffic = getLiveTrafficFeed();
+async function generatePredictions() {
+  try {
+    const liveTraffic = await getLiveTrafficFeed();
+    const weather = await getWeatherFeed(); // Global weather for all zones
 
-  return liveTraffic.map(segment => {
-    const history = getHistoricalFeed(segment.segmentId);
-    const weather = getWeatherFeed(segment.zone);
-    const events = getEventFeed(segment.zone);
+    const predictions = await Promise.all(liveTraffic.map(async (segment) => {
+      const history = getHistoricalFeed(segment.segmentId);
+      const events = await getEventFeed(segment.zone);
 
-    // Weighted multi-factor model
-    const liveScore = segment.liveScore; // 0.0 - 1.0
-    const historyScore = history.historyScore; // 0.0 - 1.0
-    const weatherScore = weather.impactScore; // 0.0 - 1.0
-    const eventScore = events.eventScore; // 0.0 - 1.0
+      // Weighted multi-factor model
+      const liveScore = segment.liveScore; // 0.0 - 1.0
+      const historyScore = history.historyScore; // 0.0 - 1.0
+      const weatherScore = weather.impactScore; // 0.0 - 1.0
+      const eventScore = events.eventScore; // 0.0 - 1.0
 
-    const weightedScore = (liveScore * 0.40) + (historyScore * 0.25) + (weatherScore * 0.15) + (eventScore * 0.20);
-    const predictedCongestion = Math.min(100, Math.round(weightedScore * 100));
-    const alertLevel = getAlertLevel(predictedCongestion);
+      const weightedScore = (liveScore * 0.40) + (historyScore * 0.25) + (weatherScore * 0.15) + (eventScore * 0.20);
+      const predictedCongestion = Math.min(100, Math.round(weightedScore * 100));
+      const alertLevel = getAlertLevel(predictedCongestion);
 
-    return {
-      segmentId: segment.segmentId,
-      segmentName: segment.segmentName,
-      zone: segment.zone,
-      currentCongestion: segment.densityPercent,
-      predictedCongestion: predictedCongestion,
-      alertLevel: alertLevel,
-      predictedInMinutes: Math.round(15 + Math.random() * 10), // Forecast horizon (15-25m ahead)
-      factors: {
-        liveScore: liveScore,
-        historyScore: historyScore,
-        weatherScore: weatherScore,
-        eventScore: eventScore
-      },
-      weatherCondition: weather.condition,
-      activeEvents: events.activeEvents,
-      timestamp: new Date().toISOString()
-    };
-  });
+      return {
+        segmentId: segment.segmentId,
+        segmentName: segment.segmentName,
+        zone: segment.zone,
+        currentCongestion: segment.densityPercent,
+        predictedCongestion: predictedCongestion,
+        alertLevel: alertLevel,
+        predictedInMinutes: Math.round(15 + Math.random() * 10), // Forecast horizon (15-25m ahead)
+        factors: {
+          liveScore: liveScore,
+          historyScore: historyScore,
+          weatherScore: weatherScore,
+          eventScore: eventScore
+        },
+        weatherCondition: weather.condition,
+        activeEvents: events.activeEvents,
+        timestamp: new Date().toISOString()
+      };
+    }));
+
+    return predictions;
+  } catch (error) {
+    console.error('[Prediction Engine Error]:', error.message);
+    throw error;
+  }
 }
 
 module.exports = {

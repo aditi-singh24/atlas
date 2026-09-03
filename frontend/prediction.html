@@ -36,6 +36,12 @@
       }
     }
   </script>
+  <style>
+    #zoneSelect option {
+      color: #000;
+      background-color: #fff;
+    }
+  </style>
 </head>
 
 <body class="bg-atlas-bg text-atlas-text font-sans antialiased min-h-screen flex">
@@ -165,32 +171,40 @@
             <line x1="0" y1="140" x2="800" y2="140" stroke="#E2E8F0" stroke-dasharray="4"></line>
             <line x1="0" y1="190" x2="800" y2="190" stroke="#E2E8F0" stroke-dasharray="4"></line>
 
+            <g id="junctionPaths"></g>
+
             <!-- Actual Traffic Path (Teal) -->
-            <path d="M 0 170 Q 150 160 300 110 T 450 120" stroke="#8AA8AB" stroke-width="3" fill="none"></path>
+            <path id="actualPath" d="" stroke="#8AA8AB" stroke-width="3" fill="none"></path>
 
             <!-- Predicted Traffic Path (Red) -->
-            <path id="predictionPath" d="M 450 120 Q 550 60 650 45 T 800 90" stroke="#B0323A" stroke-width="3.5"
-              fill="none" stroke-dasharray="6 2"></path>
+            <path id="predictionPath" d="" stroke="#B0323A" stroke-width="3.5" fill="none" stroke-dasharray="2 6"
+              stroke-linecap="round">
+            </path>
 
             <!-- Interactive Overlay Curve (Orange/Amber - Triggered by lower panels) -->
-            <path id="overlayPath" d="M 0 170 Q 200 180 400 130 T 800 30" stroke="#D97746" stroke-width="2.5"
-              fill="none" stroke-dasharray="3 3" opacity="0.2"></path>
+            <path id="overlayPath" d="" stroke="#D97746" stroke-width="2.5" fill="none" stroke-dasharray="3 3"
+              opacity="0.2"></path>
 
             <!-- Live Marker -->
-            <circle cx="450" cy="120" r="5" fill="#B0323A" class="animate-ping"></circle>
-            <circle cx="450" cy="120" r="4" fill="#B0323A"></circle>
+            <circle id="liveMarkerPulse" cx="0" cy="0" r="5" fill="#B0323A" class="animate-ping"></circle>
+            <circle id="liveMarker" cx="0" cy="0" r="4" fill="#B0323A"></circle>
           </svg>
+          <div id="graphTooltip"
+            class="hidden absolute z-10 pointer-events-none rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs shadow-lg">
+          </div>
 
           <div class="mt-4 flex items-center space-x-4">
-            <span class="text-xs text-atlas-muted font-mono">04:00 PM</span>
-            <input type="range" min="0" max="100" value="60" class="w-full accent-atlas-red cursor-pointer">
-            <span class="text-xs font-bold text-atlas-red font-mono">05:00 PM (NOW)</span>
-            <span class="text-xs text-atlas-muted font-mono">06:00 PM</span>
+            <span id="timelineStart" class="text-xs text-atlas-muted font-mono">04:00 PM</span>
+            <input id="timelineSlider" type="range" min="0" max="100" value="50"
+              class="w-full accent-atlas-red cursor-pointer">
+            <span id="timelineNow" class="text-xs font-bold text-atlas-red font-mono">05:00 PM (NOW)</span>
+            <span id="timelineEnd" class="text-xs text-atlas-muted font-mono">06:00 PM</span>
           </div>
+          <div id="junctionLegend" class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-atlas-muted"></div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
 
         <!-- 1. HISTORY TRENDS -->
         <div onclick="toggleOverlay('history')"
@@ -294,36 +308,216 @@
   </div>
 
   <script>
-    function toggleOverlay(type) {
+    let predictions = [];
+    let selectedRange = '1h';
+    let selectedZone = 'all';
+    let simulationTick = 0;
+    let activeOverlay = null;
+
+    const rangeSettings = {
+      '1h': { samples: 12, hours: 1 },
+      '6h': { samples: 18, hours: 6 },
+      '24h': { samples: 24, hours: 24 },
+      '7d': { samples: 28, hours: 168 }
+    };
+
+    function getSelectedPrediction() {
+      if (!predictions.length) {
+        return { currentCongestion: 42, predictedCongestion: 58, factors: {} };
+      }
+
+      if (selectedZone === 'all') {
+        return {
+          currentCongestion: predictions.reduce((total, item) => total + item.currentCongestion, 0) / predictions.length,
+          predictedCongestion: predictions.reduce((total, item) => total + item.predictedCongestion, 0) / predictions.length,
+          factors: {}
+        };
+      }
+
+      return predictions.find(item => item.segmentId === selectedZone) || predictions[0];
+    }
+
+    function createSeries(selectedPrediction = getSelectedPrediction()) {
+      const settings = rangeSettings[selectedRange];
+      const current = Number(selectedPrediction.currentCongestion) || 0;
+      const predicted = Number(selectedPrediction.predictedCongestion) || current;
+      const midpoint = Math.floor(settings.samples / 2);
+      const actual = [];
+      const forecast = [];
+
+      for (let index = 0; index <= midpoint; index += 1) {
+        const timeWave = Math.sin((index + simulationTick) * 0.8) * Math.max(2, current * 0.06);
+        actual.push(Math.max(0, Math.min(100, current + timeWave - (midpoint - index) * 0.7)));
+      }
+
+      for (let index = 0; index <= settings.samples - midpoint; index += 1) {
+        const progress = index / (settings.samples - midpoint);
+        const timeWave = Math.sin((index + simulationTick) * 0.65) * 2;
+        forecast.push(Math.max(0, Math.min(100, current + (predicted - current) * progress + timeWave)));
+      }
+
+      return { actual, forecast, midpoint, total: settings.samples };
+    }
+
+    function seriesPath(values, startX, endX) {
+      return values.map((value, index) => {
+        const x = startX + (endX - startX) * (index / Math.max(1, values.length - 1));
+        const y = 200 - (value * 1.8);
+        return `${index === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`;
+      }).join(' ');
+    }
+
+    function formatTime(offsetHours) {
+      const date = new Date(Date.now() + offsetHours * 60 * 60 * 1000);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function showGraphTooltip(event, prediction, values) {
+      const tooltip = document.getElementById('graphTooltip');
+      const svg = event.currentTarget.ownerSVGElement;
+      const svgBounds = svg.getBoundingClientRect();
+      const chartBounds = tooltip.parentElement.getBoundingClientRect();
+      const chartX = Math.max(0, Math.min(800, ((event.clientX - svgBounds.left) / svgBounds.width) * 800));
+      const valueIndex = Math.min(values.length - 1, Math.round((chartX / 800) * (values.length - 1)));
+      const hours = rangeSettings[selectedRange].hours;
+      const offsetHours = -hours / 2 + (hours * valueIndex / Math.max(1, values.length - 1));
+      const value = values[valueIndex];
+
+      const predictionWindow = Number(prediction.predictedInMinutes) || 15;
+      tooltip.innerHTML = `<strong>${prediction.segmentName || 'All junctions'}</strong><br>${formatTime(offsetHours)}<br><span class="text-atlas-red font-bold">${Math.round(value)}% congestion</span><br><span class="text-gray-600">Forecast window: ${predictionWindow} min</span>`;
+      tooltip.style.left = `${event.clientX - chartBounds.left + 12}px`;
+      tooltip.style.top = `${event.clientY - chartBounds.top - 58}px`;
+      tooltip.classList.remove('hidden');
+    }
+
+    function hideGraphTooltip() {
+      document.getElementById('graphTooltip').classList.add('hidden');
+    }
+
+    function renderJunctionLines() {
+      const junctionPaths = document.getElementById('junctionPaths');
+      const junctionLegend = document.getElementById('junctionLegend');
+      const colors = ['#2563EB', '#059669', '#D97706', '#7C3AED', '#DB2777', '#0891B2'];
+      const visiblePredictions = predictions.length ? predictions : [
+        { segmentName: 'Simulation junction', currentCongestion: 42, predictedCongestion: 58 }
+      ];
+
+      junctionPaths.replaceChildren();
+      junctionLegend.innerHTML = visiblePredictions.map((prediction, index) => `
+        <span class="flex items-center gap-1 ${selectedZone === prediction.segmentId ? 'font-bold text-atlas-text' : ''}">
+          <span class="inline-block h-1 w-4 rounded" style="background:repeating-linear-gradient(to right, ${colors[index % colors.length]} 0 2px, transparent 2px 8px)"></span>
+          ${prediction.segmentName || 'Junction ' + (index + 1)}
+        </span>
+      `).join('');
+
+      visiblePredictions.forEach((prediction, index) => {
+        const junctionSeries = createSeries(prediction);
+        const actualValues = junctionSeries.actual;
+        const predictedValues = junctionSeries.forecast;
+        const values = actualValues.slice(0, -1).concat(predictedValues);
+        const color = colors[index % colors.length];
+        const isSelected = selectedZone === prediction.segmentId;
+        const actualPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        actualPath.setAttribute('d', seriesPath(actualValues, 0, 400));
+        actualPath.setAttribute('fill', 'none');
+        actualPath.setAttribute('stroke', color);
+        actualPath.setAttribute('stroke-width', isSelected ? '3.5' : '2');
+        actualPath.setAttribute('stroke-linecap', 'round');
+        actualPath.setAttribute('opacity', isSelected ? '1' : '0.28');
+        junctionPaths.appendChild(actualPath);
+
+        const predictedPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        predictedPath.setAttribute('d', seriesPath(predictedValues, 400, 800));
+        predictedPath.setAttribute('fill', 'none');
+        predictedPath.setAttribute('stroke', color);
+        predictedPath.setAttribute('stroke-width', isSelected ? '3.5' : '2');
+        predictedPath.setAttribute('stroke-dasharray', '2 6');
+        predictedPath.setAttribute('stroke-linecap', 'round');
+        predictedPath.setAttribute('opacity', isSelected ? '1' : '0.28');
+        junctionPaths.appendChild(predictedPath);
+
+        const hoverPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        hoverPath.setAttribute('d', seriesPath(values, 0, 800));
+        hoverPath.setAttribute('fill', 'none');
+        hoverPath.setAttribute('stroke', 'transparent');
+        hoverPath.setAttribute('stroke-width', '14');
+        hoverPath.style.pointerEvents = 'stroke';
+        hoverPath.addEventListener('mousemove', event => showGraphTooltip(event, prediction, values));
+        hoverPath.addEventListener('mouseleave', hideGraphTooltip);
+        junctionPaths.appendChild(hoverPath);
+      });
+    }
+
+    function renderGraph() {
+      const series = createSeries();
+      const actualPath = document.getElementById('actualPath');
+      const predictionPath = document.getElementById('predictionPath');
       const overlayPath = document.getElementById('overlayPath');
+      const liveMarker = document.getElementById('liveMarker');
+      const liveMarkerPulse = document.getElementById('liveMarkerPulse');
+      const slider = document.getElementById('timelineSlider');
+      const selectedPrediction = getSelectedPrediction();
+
+      renderJunctionLines();
+      actualPath.setAttribute('d', seriesPath(series.actual, 0, 400));
+      predictionPath.setAttribute('d', seriesPath(series.forecast, 400, 800));
+
+      if (activeOverlay) {
+        const impact = activeOverlay === 'weather' ? 15 : activeOverlay === 'event' ? 35 : 18;
+        const overlay = series.forecast.map((value, index) => Math.min(100, value + impact * (index / series.forecast.length)));
+        overlayPath.setAttribute('d', seriesPath(overlay, 400, 800));
+        overlayPath.setAttribute('opacity', '1');
+      } else {
+        overlayPath.setAttribute('d', '');
+        overlayPath.setAttribute('opacity', '0.2');
+      }
+
+      const sliderPosition = Number(slider.value) / 100;
+      const chartX = sliderPosition * 800;
+      const source = chartX <= 400 ? series.actual : series.forecast;
+      const sourcePosition = chartX <= 400 ? chartX / 400 : (chartX - 400) / 400;
+      const valueIndex = Math.min(source.length - 1, Math.round(sourcePosition * (source.length - 1)));
+      const chartY = 200 - (source[valueIndex] * 1.8);
+      liveMarker.setAttribute('cx', chartX.toFixed(1));
+      liveMarker.setAttribute('cy', chartY.toFixed(1));
+      liveMarkerPulse.setAttribute('cx', chartX.toFixed(1));
+      liveMarkerPulse.setAttribute('cy', chartY.toFixed(1));
+
+      const hours = rangeSettings[selectedRange].hours;
+      document.getElementById('timelineStart').textContent = formatTime(-hours / 2);
+      document.getElementById('timelineNow').textContent = `${formatTime(0)} (NOW)`;
+      document.getElementById('timelineEnd').textContent = formatTime(hours / 2);
+      document.getElementById('timelineSlider').setAttribute('aria-label', `${Math.round(selectedPrediction.currentCongestion)}% current congestion`);
+    }
+
+    function toggleOverlay(type) {
       const activeTag = document.getElementById('activeOverlayTag');
 
-      if (overlayPath.getAttribute('opacity') === '1') {
-        overlayPath.setAttribute('opacity', '0.2');
+      if (activeOverlay === type) {
+        activeOverlay = null;
         activeTag.classList.add('hidden');
       } else {
-        overlayPath.setAttribute('opacity', '1');
+        activeOverlay = type;
         activeTag.classList.remove('hidden');
         activeTag.textContent = 'Active Layer: ' + type.toUpperCase();
       }
+      renderGraph();
     }
 
-    // Fetch API Deliverable predictions from Express Backend and update DOM
     async function loadApiPredictions() {
       try {
         const response = await fetch('http://localhost:5000/api/predictions');
         if (response.ok) {
-          const predictions = await response.json();
+          predictions = await response.json();
           console.log('[ATLAS Prediction API Feed Loaded]:', predictions);
 
-          // Populate Zone Selector dynamically
           const zoneSelect = document.getElementById('zoneSelect');
           if (zoneSelect && predictions.length > 0) {
             zoneSelect.innerHTML = predictions.map(p =>
               `<option value="${p.segmentId}">${p.segmentName} (${p.zone}) - ${p.alertLevel}</option>`
             ).join('');
+            selectedZone = zoneSelect.value;
 
-            // Add live indicator badge
             const header = document.querySelector('header');
             if (header && !document.getElementById('apiConnectedBadge')) {
               const badge = document.createElement('span');
@@ -333,12 +527,36 @@
               header.appendChild(badge);
             }
           }
+          renderGraph();
         }
       } catch (err) {
         console.warn('[ATLAS Prediction API Offline]: Running with local simulated feed');
+        renderGraph();
       }
     }
-    document.addEventListener('DOMContentLoaded', loadApiPredictions);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('zoneSelect').addEventListener('change', event => {
+        selectedZone = event.target.value;
+        renderGraph();
+      });
+      document.getElementById('timelineSlider').addEventListener('input', renderGraph);
+      document.querySelectorAll('.time-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          selectedRange = button.textContent.trim();
+          document.querySelectorAll('.time-btn').forEach(item => item.classList.remove('active', 'bg-atlas-red', 'text-white'));
+          button.classList.add('active', 'bg-atlas-red', 'text-white');
+          renderGraph();
+        });
+      });
+      renderGraph();
+      loadApiPredictions();
+      setInterval(() => {
+        simulationTick += 1;
+        renderGraph();
+      }, 5000);
+      setInterval(loadApiPredictions, 30000);
+    });
   </script>
 
 </body>

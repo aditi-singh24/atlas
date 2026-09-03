@@ -13,6 +13,8 @@
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -104,7 +106,7 @@
   <!-- Main Content Area -->
   <div class="ml-64 flex-1 flex flex-col min-h-screen">
 
-    <header class="h-16 bg-atlas-dark text-white px-8 flex justify-between items-center sticky top-0 z-20 shadow-md">
+    <header class="h-16 bg-atlas-dark text-white px-8 flex justify-between items-center sticky top-0 z-50 shadow-md">
       <div class="flex items-center space-x-6">
         <span class="font-display font-bold text-lg tracking-wide uppercase text-emerald-400 flex items-center gap-2">
           <span class="material-symbols-outlined text-emerald-400">emergency</span> GREEN CORRIDOR
@@ -147,40 +149,9 @@
             </div>
           </div>
 
-          <!-- Map Simulation Canvas -->
-          <div
-            class="flex-1 bg-slate-950 rounded-lg relative overflow-hidden flex items-center justify-center border border-gray-300">
-            <!-- Grid Pattern -->
-            <div
-              class="absolute inset-0 opacity-20 bg-[radial-gradient(#10B981_1px,transparent_1px)] [background-size:20px_20px]">
-            </div>
-
-            <!-- Route Path Line -->
-            <svg class="absolute inset-0 w-full h-full">
-              <path d="M 100 280 L 250 200 L 480 140 L 680 80" stroke="#10B981" stroke-width="5" fill="none"
-                stroke-linecap="round"></path>
-            </svg>
-
-            <!-- Signal States along Path -->
-            <div
-              class="absolute bottom-[80px] left-[100px] bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded font-bold">
-              Junction 1: GREEN</div>
-            <div
-              class="absolute bottom-[160px] left-[250px] bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded font-bold">
-              Junction 2: GREEN</div>
-            <div
-              class="absolute top-[120px] left-[480px] bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded font-bold">
-              Junction 3: PREEMPTING</div>
-            <div
-              class="absolute top-[60px] left-[680px] bg-amber-600 text-white text-[10px] px-2 py-0.5 rounded font-bold">
-              Junction 4: HOLD</div>
-
-            <!-- Moving Ambulance Marker -->
-            <div
-              class="absolute bottom-[150px] left-[220px] bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow-xl flex items-center gap-1 border-2 border-white animate-bounce">
-              <span class="material-symbols-outlined text-sm">medical_services</span> AMB-902 (Live GPS)
-            </div>
-          </div>
+          <!-- Live Traffic Map -->
+          <div id="map" class="relative z-0 isolate flex-1 rounded-lg border border-gray-300"
+            style="min-height: 350px;"></div>
         </div>
 
         <div class="bg-white rounded-xl border border-gray-300 p-6 shadow-sm flex flex-col justify-between">
@@ -311,6 +282,113 @@
     </footer>
 
   </div>
+
+  <script>
+    function initializeMap() {
+      const map = L.map('map').setView([12.9716, 77.5946], 11);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      const segments = [
+        { name: 'Silk Board Junction', lat: 12.9352, lng: 77.6245, id: 'SEG-101' },
+        { name: 'Marathahalli Bridge', lat: 12.9698, lng: 77.7499, id: 'SEG-102' },
+        { name: 'Hebbal Junction', lat: 13.0109, lng: 77.5904, id: 'SEG-103' },
+        { name: 'KR Puram Junction', lat: 13.0277, lng: 77.6408, id: 'SEG-104' },
+        { name: 'Whitefield Junction', lat: 12.9698, lng: 77.7480, id: 'SEG-105' }
+      ];
+      const trafficLayer = L.layerGroup().addTo(map);
+
+      const corridorWaypoints = [
+        [12.9352, 77.6245],
+        [12.9698, 77.6408],
+        [13.0109, 77.5904]
+      ];
+      const routeLayer = L.layerGroup().addTo(map);
+
+      async function loadCorridorRoute() {
+        const coordinates = corridorWaypoints.map(([latitude, longitude]) => `${longitude},${latitude}`).join(';');
+        const routeUrl = `https://router.project-osrm.org/route/v1/driving/${coordinates}?overview=full&geometries=geojson&steps=true`;
+
+        try {
+          const response = await fetch(routeUrl);
+          if (!response.ok) throw new Error(`Routing service returned ${response.status}`);
+
+          const routeData = await response.json();
+          if (routeData.code !== 'Ok' || !routeData.routes.length) throw new Error('No road route found');
+
+          const roadRoute = routeData.routes[0].geometry.coordinates.map(([longitude, latitude]) => [latitude, longitude]);
+          L.polyline(roadRoute, { color: '#10B981', weight: 7, opacity: 0.9 }).addTo(routeLayer)
+            .bindPopup('<strong>AMB-902 Green Corridor</strong><br>Road-by-road route<br>City General &rarr; St. Jude Hospital');
+          map.fitBounds(roadRoute, { padding: [24, 24] });
+        } catch (error) {
+          console.warn('Road routing unavailable; showing waypoint fallback.', error);
+          L.polyline(corridorWaypoints, { color: '#10B981', weight: 6, opacity: 0.9, dashArray: '10 8' }).addTo(routeLayer)
+            .bindPopup('<strong>AMB-902 Green Corridor</strong><br>Routing service unavailable');
+        }
+      }
+
+      loadCorridorRoute();
+
+      const ambulanceIcon = L.divIcon({
+        className: 'ambulance-marker',
+        html: '<div style="background:#10B981;color:white;padding:6px 10px;border:2px solid white;border-radius:999px;font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.35);white-space:nowrap">AMB-902 (Live GPS)</div>',
+        iconSize: [150, 32],
+        iconAnchor: [75, 16]
+      });
+      L.marker([12.9698, 77.6408], { icon: ambulanceIcon }).addTo(map)
+        .bindPopup('<strong>AMB-902</strong><br>Active corridor<br>ETA: 4 min 12 sec');
+
+      const junctions = [
+        { position: [12.9352, 77.6245], label: 'Junction 1: GREEN' },
+        { position: [12.9698, 77.6408], label: 'Junction 2: PREEMPTING' },
+        { position: [13.0109, 77.5904], label: 'Junction 3: GREEN' }
+      ];
+      junctions.forEach(junction => L.circleMarker(junction.position, {
+        radius: 9,
+        fillColor: '#10B981',
+        color: '#fff',
+        weight: 2,
+        fillOpacity: 0.95
+      }).addTo(map).bindTooltip(junction.label));
+
+      async function loadTrafficData() {
+        try {
+          const response = await fetch('http://localhost:5000/api/predictions');
+          const predictions = await response.json();
+          trafficLayer.clearLayers();
+
+          predictions.forEach(prediction => {
+            const segment = segments.find(item => item.id === prediction.segmentId);
+            if (!segment) return;
+
+            let color = '#10B981';
+            if (prediction.predictedCongestion >= 85) color = '#B0323A';
+            else if (prediction.predictedCongestion >= 65) color = '#D97746';
+            else if (prediction.predictedCongestion >= 40) color = '#FCD34D';
+
+            L.circleMarker([segment.lat, segment.lng], {
+              radius: 15,
+              fillColor: color,
+              color: '#000',
+              weight: 2,
+              opacity: 0.8,
+              fillOpacity: 0.7
+            }).addTo(trafficLayer).bindPopup(`<strong>${segment.name}</strong><br>Congestion: ${prediction.predictedCongestion}%<br>Alert: ${prediction.alertLevel}`);
+          });
+        } catch (error) {
+          console.warn('Map traffic feed offline; showing corridor route.', error);
+        }
+      }
+
+      loadTrafficData();
+      setInterval(loadTrafficData, 30000);
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeMap);
+  </script>
 
 </body>
 
