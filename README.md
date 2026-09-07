@@ -1,62 +1,100 @@
-# ATLAS Traffic Control API — Person B (COMPLETE + CONNECTED TO PERSON A)
+# ATLAS — Adaptive Traffic Light & Analytics System
 
-This backend is fully connected to Person A's real Node.js prediction API.
-An adapter translates their actual output shape into what this system needs,
-so neither of you had to rewrite already-working code.
+ATLAS is a smart traffic control system that combines real-time traffic
+prediction with automated signal and routing decisions. It's built as two
+cooperating services: a **prediction API** that forecasts congestion on each
+road segment, and a **control API** that turns those forecasts into signal
+timing, route guidance, and emergency corridor decisions.
 
-## Setup (run once)
-```bash
-cd atlas_control
-python3 -m venv venv
-source venv/bin/activate      # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+## Architecture
+
+```
+┌─────────────────────┐        ┌──────────────────────┐
+│   Prediction API     │  --->  │     Control API       │
+│  (Node.js, :5000)    │        │  (FastAPI, :8001)      │
+│  Traffic forecasting │        │  Signals, routing,     │
+│  per road segment     │        │  emergency corridors,  │
+└─────────────────────┘        │  what-if simulation    │
+                                └──────────────────────┘
 ```
 
-## Run — TWO servers need to be running together
+The control API consumes live forecasts from the prediction API through an
+adapter layer, which normalizes field names and value scales so the two
+services can evolve independently. If the prediction API is unreachable, the
+control API automatically falls back to mock data so development and demos
+can continue uninterrupted.
 
-**Terminal 1 — Person A's prediction server (Node.js):**
+## Repository Layout
+
+```
+atlas/
+├── backend/
+│   ├── atlas_prediction/     # Traffic prediction service (Node.js)
+│   └── atlas_control/        # Traffic control service (FastAPI/Python)
+└── frontend/                 # Dashboard UI
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js and npm
+- Python 3.9+
+
+### 1. Start the prediction service
 ```bash
-cd atlas_prediction    # Person A's project folder
+cd backend/atlas_prediction
 npm install
 node server.js
 ```
-Runs on http://localhost:5000
+Runs at `http://localhost:5000`.
 
-**Terminal 2 — Person B's control server (this project):**
+### 2. Start the control service
 ```bash
-cd atlas_control
-source venv/bin/activate
-python3 test_api.py                          # optional: confirms logic works
+cd backend/atlas_control
+python3 -m venv venv
+source venv/bin/activate      # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+python3 test_api.py                   # optional: run automated checks
 uvicorn app.main:app --reload --port 8001
 ```
-Runs on http://localhost:8001
+Runs at `http://localhost:8001`. Interactive API docs are available at
+`http://localhost:8001/docs`.
 
-If Person A's server isn't running, Person B's server automatically falls
-back to mock data (check the terminal for a warning) — so you can still
-develop and demo Person B's half independently.
+> The control service works independently of the prediction service. If the
+> prediction API isn't running, it automatically falls back to mock data
+> (a warning is printed in the terminal), so the control service can still be
+> developed, tested, and demoed on its own.
 
-Then open: http://localhost:8001/docs
+## API Endpoints
 
-## Endpoints
-| Endpoint | Method | Purpose |
+| Endpoint | Method | Description |
 |---|---|---|
-| `/api/control` | GET | Signal + route decision for every road (pulls live from Person A) |
-| `/api/route?start=SEG-101&end=SEG-105` | GET | Shortest route avoiding severe congestion |
-| `/api/emergency` | POST | Activates green corridor for an emergency vehicle |
-| `/api/network` | GET | Road coordinates for the dashboard map |
-| `/api/whatif` | POST | Digital twin — simulate traffic/rain/event/signal changes |
+| `/api/control` | GET | Signal timing and routing decisions for every monitored road, based on live traffic forecasts |
+| `/api/route` | GET | Shortest route between two segments (e.g. `?start=SEG-101&end=SEG-105`), avoiding severe congestion |
+| `/api/emergency` | POST | Activates a green-light corridor for an emergency vehicle |
+| `/api/network` | GET | Road segment coordinates for the dashboard map |
+| `/api/whatif` | POST | Digital-twin simulation of traffic, weather, events, or signal changes |
 
-## The Adapter (app/prediction_adapter.py)
-Person A's real API returns a different shape than the schema you two
-originally agreed on (different field names, 0-100 scale instead of 0-1,
-etc). Rather than rewriting either side, `prediction_adapter.py` translates
-between them at the boundary. This is the ONLY file that knows about both
-shapes — if Person A's output format ever changes, this is the only file
-to update.
+## The Prediction Adapter
 
-## Road network
-Aligned with Person A's real 5 monitored segments: SEG-101 through SEG-105
-(see `app/network.py`).
+The prediction service and control service were designed against slightly
+different data conventions — different field names, and a 0–100 congestion
+scale versus a 0–1 scale used internally by the control service.
+`app/prediction_adapter.py` is the single translation layer between the two:
+it's the only file that needs to change if the prediction API's output
+format changes, keeping the rest of the control service decoupled from that
+detail.
 
-## Verifying it's working
-Run `python3 test_api.py` any time — 14 automated checks, no server needed.
+## Road Network
+
+The system monitors five road segments, `SEG-101` through `SEG-105`,
+defined in `app/network.py`.
+
+## Testing
+
+Run the automated test suite at any time, no servers required:
+```bash
+python3 test_api.py
+```
+This runs 14 checks covering the core control logic.
